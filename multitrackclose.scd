@@ -17,6 +17,7 @@
 ~trk_Etna1.free;
 ~trk_Etna2.free;
 ~trk_Etna3.free;
+~trk_Etna7.free;
 ~trk_Etna4.free;
 ~trk_Etna5.free;
 ~trk_Etna6.free;
