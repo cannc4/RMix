@@ -10,44 +10,36 @@
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-
+(
+~echo = Synth(\dubecho, [\amp, 2, \ibs, ~b1, \obs , 0,  \length, TempoClock.default.tempo*(3/8), \fb, 0.7, \sep, 0.0012]);
+~reverb= Synth(\reverb2, [ \ibs, ~b2, \obs , 0,  \delaytime,1, \decaytime, 1, \amp, 1],addAction: \addToTail);
+~reverb2= Synth(\reverb, [ \ibs, ~b3, \obs , 0,  \revtime,1.8, \mix, 1, \amp, 1],addAction: \addToTail);
+~freeze= Synth(\freeze, [ \ibs, ~b4, \obs , 0,  \freeze,0],addAction: \addToTail);
+~recbuf= Synth.new(\RecordBuf, [\inbus, ~b7, \bufnum, b]);	//set a buffer as default
+~playback = Synth(\playback, [\bufnum, 0, \atk , 0.01, \rel, 0.1 ]);
+~tc = TempoClock(1.5);)
 //RECORD//
 (
+~ar7.set(\out, ~b4);
 ~test_DrumSmpl1 = 1;
 ~test_DrumSmpl2 = 1;
 ~test_DrumSmpl3 = 1;
 ~test_DrumSmpl4 = 1;
 ~test_DrumSmpl5 = 1;
 ~test_DrumSmpl6 = 1;
-
-~test_Etna1 = 1;
-~test_Etna2 = 1;
-~test_Etna3 = 1;
-~test_Etna4 = 1;
-~test_Etna5 = 1;
-~test_Etna6 = 1;
-
-~test_Massaka = 1;
 ~test_SumanGuru = 1;
 ~test_Acid = 1;
-~test_P5pwm = 1;
-~test_Lumbricost = 1;
 
-~test_SOSkick = 1;
-~test_SOShats = 1;
-~test_SOSsnare = 1;
-~test_SOStom = 1;
 "multitrack.scd".loadRelative;
-}
+)
 //CLOSE//
 "multitrackclose.scd".loadRelative;
 
 
 ~tempos = [120/160, 160/60];
-~tc = TempoClock(3);
 
-~tc = 2;
-~tc = 0.5;
+~tc = TempoClock(2);
+~tc = TempoClock(3);
 
 //Pseries(0, 1, 8),
 //Pseq([Pseq([100, 200, 300], 2), 400, 500, 600],inf)~tc = 0.1;
@@ -237,33 +229,7 @@ Pbindef(\track2sq,\degree,Pswitch([Pwhite(7, 14, inf), Pwhite(-7, 0, inf)], Pfun
 
 
 
-(
-var base;
 
-base = Pbind(\amp, 0.3);
-
-Ppar([
-    Pbindf(
-        base,
-        \instrument, Pseq([\kick, \snare, \kick, \kick, \snare], inf),
-        \dur, Pseq([4, 3, 3, 2, 4], inf)
-    ),
-    Pbindf(
-        base,
-        \instrument, Pseq([Pn(\hihat, 16), Pn(\clap, 16)], inf),
-        \dur, Pseq([Rest(2), 2, Rest(2), 2], inf)
-    )
-]).play(TempoClock(2.3 * 4));
-)
-
-
-
-(
-~recbuf= Synth.new(\RecordBuf, [\inbus, ~b7, \bufnum, b]);	//set a buffer as default
-~playback = Synth(\playback, [\bufnum, 0, \atk , 0.01, \rel, 0.1 ]);
-//~ech = Synth(\echo, [\amp, 1, \ibs, ~b3, \out , 0, \maxdtime, 0.2, \dtime, 0.5, \decay, 0.1], ~fxGroup);
-~echo = Synth(\dubecho, [\amp, 2, \ibs, ~b1, \obs , 0,  \length, TempoClock.default.tempo*(3/8), \fb, 0.7, \sep, 0.0012], addAction: \addToTail);
-)
 ////////////////////////////////////Routings////////////////////////////////////
 ~ar1.set(\out, ~b1);
 ~ar1.set(\out, ~b2);
@@ -272,14 +238,16 @@ Ppar([
 ~ar1.set(\out, ~b5);
 ~ar1.set(\out, 0);
 
-~ar2.set(\out, ~b1);
+~ar7.set(\out, 0);
+~ar2.set(\out, 0);
+~ar7.set(\out, ~b4);
 ~ar2.set(\out, ~b2);
 ~ar2.set(\out, ~b3);
 ~ar2.set(\out, ~b4);
 ~ar2.set(\out, ~b5);
 ~ar2.set(\out, ~b6);
 ~ar2.set(\out, ~b7);
-~ar2.set(\out, 0);
+
 
 ~ar3.set(\out, ~b1);
 ~ar3.set(\out, ~b2);
@@ -326,17 +294,19 @@ Ppar([
 
 
 
+////////////////FX PARAMS////////////////
+
 
 ~recbuf.set(\inbus, ~b7);
 ~playback.set(\obs, 0);
-~echo.set(\amp, 25, \length, 6, \fb, 0.8, \sep, 0.0012);
+~echo.set(\amp, 10, \length, 6, \fb, 0.8, \sep, 0.0012);
 ~echo.set(\amp, 15, \length, 0.5, \fb, 0.9, \sep, 0.002);
-~echo.set(\amp, 35, \length, 0.5, \fb, 0.50, \sep, 0.00012); // ULTIMATE DELAY PARAMETERS
-~echo.set(\amp, 20, \length, 0.1, \fb, 0.2, \sep, 0.012);
+~echo.set(\amp, 5, \length, 0.5, \fb, 0.50, \sep, 0.00012); // ULTIMATE DELAY PARAMETERS
+~echo.set(\amp, 10, \length, 0.1, \fb, 0.2, \sep, 0.012);
 
 ~echo.set(\amp, 30, \length, 0.001, \fb, 0.8, \sep, 0.0012);
-~pcase.set(\amp, 1, \mix,0.6);
-~freeverb.set(\amp,5, \delaytime, 0.1 , \decaytime, 1000);
+~freeze.set(\freeze, 0.9);
+~reverb.set(\amp,10, \delaytime, 0.9 , \decaytime, 100);
 ~flang.set(\amp, 10,\delay, 0.1, \depth,0.5, \rate, 0.1, \fdbk, 0.1, \decay, 0.19);
 //~chorus.set(\amp, 5);
 ~ech.set(\amp, 2,\maxdtime, 0.5, \dtime, 0.2, \decay, 0.5);
@@ -362,7 +332,7 @@ Ppar([
 
 
 
-///////////////////////////////////////// Sequence ////////////////////////////////////////////////
+///////////////////////////////////////// Sequences ////////////////////////////////////////////////
 (
 t = Task({
 	var delta;
@@ -402,12 +372,95 @@ t = Task({
 		~ar3.set(\out, ~b1);
 	}
 
-}).play;
+});
 )
-SystemClock.play(t)
-t.stop
+
+~snaredel = Task({
+	var delta;
+	loop {
+
+		delta = rrand(1, 5);
+		if(2>delta){
+
+			~ar2.set(\out,~b1);
+
+	}{
+			~ar2.set(\out,0);
+
+	};
+
+		0.5.wait;
 
 
+}
+});
+~snaredel.play(~tc);
+~snaredel.stop
+~hatdel = Task({
+	var delta;
+	loop {
+
+		delta = rrand(1, 3);
+		if(2>delta){
+
+			~ar7.set(\out,~b1);
+
+	}{
+			~ar7.set(\out,0);
+
+	};
+		1.wait;
+		if(delta > 2){
+			~echo.set(\amp, 12, \length, 0.5, \fb, 0.50, \sep, 0.00012); // ULTIMATE DELAY PARAMETERS
+		}{
+
+			~echo.set(\amp, 10, \length, 0.5, \fb, 0.20, \sep, 0.00012); // ULTIMATE DELAY PARAMETERS
+		};
+
+		1.wait;
+
+
+}
+});
+~hatdel.play(~tc);
+~hatdel.stop;
+
+~cpdel = Task({
+	var delta;
+	loop {
+
+		delta = rrand(1, 3);
+		if(2>delta){
+
+			~ar3.set(\out,~b4);
+						~ar7.set(\out,~b4);
+														~ar2.set(\out, 0);
+
+	}{
+			~ar3.set(\out,0);
+											~ar2.set(\out, 0);
+
+	};
+		0.5.wait;
+		if(delta > 1.5){
+			~echo.set(\amp, 15, \length, 0.5, \fb, 0.50, \sep, 0.00012); // ULTIMATE DELAY
+					~ar1.set(\out, ~b4);
+											~ar2.set(\out, ~b4);
+		}{
+
+			~echo.set(\amp, 10, \length, 0.5, \fb, 0.20, \sep, 0.000012); // ULTIMATE DELAY
+								~ar1.set(\out, 0);
+								~ar2.set(\out, ~b4);
+									~ar7.set(\out,0);
+		};
+
+		0.2.wait;
+
+
+}
+});
+~cpdel.play(~tc);
+~cpdel.stop
 (
 l = Task({
 	var delta;
@@ -422,8 +475,8 @@ l = Task({
 ~echo.set(\amp, 25, \length, 0.2, \fb, delta, \sep, 0.002);
 ~echo.set(\amp, 35, \length, 0.5, \fb, 0.50, \sep, 0.00012);
 ~echo.set(\amp, 20, \length, 0.1, \fb, 0.2, \sep, 0.012);
-
-
+		~ar1.set(\out, ~b4);
+		~ar4.set(\out, ~b4);
 		2.wait;
 		delta.yield;
 	}
@@ -432,287 +485,4 @@ l = Task({
 l.stop
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-s.makeWindow
-
-
-///////////////////////////////////////// SYNTHS ///////////////////////////////////////////////
-
-(
-SynthDef(\pbindefx, { arg out, in, time1=0.25, time2=0.5;
-	var audio, efx;
-	audio = In.ar([20, 21], 2);
-	efx=CombN.ar(audio, 0.5, [time1, time2], 10, 1, audio);
-	Out.ar(out, efx);
-}).add;
-
-
-
-~acid = SynthDef(\acid, { arg out, freq = 432, gate = 1, pan = 0, cut = 4000, rez = 0.5, amp = 1;
-
-	var output = Pan2.ar(
-		RLPF.ar(
-			Pulse.ar(freq, 0.05),
-			cut, rez),
-		pan) * EnvGen.kr(Env.linen(0.02, 0.8, 0.4), gate, amp, doneAction:2);
-	output = Limiter.ar(output	,0.9, 0.05);
-	output = (-12).dbamp * output;
-	Out.ar(out,output);
-}).add;
-
-)
-~acidCnt = Synth.after(1, \pbindefx);
-(
-~acidSeq= Pbind(\instrument, \acid,
-	\out, 20,
-	\dur, Pseq([0.25, 0.5, 0.25], inf),
-	\root, [-24, -17],
-	\degree, Pseq([0, 2, 5, 7, 9, 12, 14,17,19], inf),
-	\pan, Pfunc({1.0.rand2}),
-	\cut, Pxrand([1000, 5000], inf),
-	\rez, Pfunc({0.7.rand +0.3}),
-	\amp, 0.13).play;
-)
-
-~acidCnt.set(\time1, 0.25,\time1, 0.1);
-~acidCnt.set(\time1, 0.25,\time1, 0.1);
-~acidCnt.set(\time1, 0.50,\time1, 0.8);
-~acidCnt.set(\out, ~b5);
-~acidCnt.set(\out, 0);
-~acidSeq.stop;
-
-
-(
-~acidSeq2= Pbind(\instrument, \acid,
-	\out, 20,
-	\dur, Pseq([0.25, 0.5, 0.25], inf),
-	\root, [-24, -17],
-	\degree, Pseq([0, 2, 5, 7, 9, 12, 14,17,19], inf),
-	\pan, Pfunc({1.0.rand2}),
-	\cut, Pxrand([1000, 500, 100, 300], inf),
-	\rez, Pfunc({0.7.rand +0.3}),
-	\amp, 0.1).play;
-)
-~acidSeq2.play
-~acidSeq2.stop
-
-(
-~acidSeq3= Pbind(\instrument, \acid,
-	\out, 20,
-	\dur, Pseq([0.25, 0.5, 0.25], inf),
-	\root, [-10, -17],
-	\degree, Pseq([0, 2, 5, 7, 9, 12, 14,17,19], inf),
-	\pan, Pfunc({1.0.rand2}),
-	\cut, Pxrand([1000, 500, 100, 300], inf),
-	\rez, Pfunc({0.7.rand +0.3}),
-	\amp, 0.01).play;
-)
-~acidSeq3.play
-~acidSeq3.stop;
-
-
-
-(
-~molecular_box = { arg lenpat, quant=16, keep=3, pattern;
-
-	Prout({ arg ev;
-
-		var lenstr = lenpat.asStream;
-		var patstr;
-		var buf = Array.fill(quant,{List.new});
-		var pat, len;
-		var i;
-		var basepat;
-
-		patstr = pattern.asStream;
-
-		len = lenstr.next;
-		if(len.isNil) {
-			nil.yield;
-		};
-
-		i = 0;
-		inf.do {
-			var n;
-			buf[i] = buf[i].keep(0-keep);
-			n = buf[i];
-
-			if(n.size != 0) {
-				// previous note found, change note length
-				len = lenstr.next;
-				if(len.isNil) {
-					nil.yield;
-				};
-			};
-
-			basepat = ev;
-			basepat[\legato] = len;
-			pat = patstr.next(basepat);
-			if(pat.isNil) {
-				nil.yield;
-			};
-
-			n.add(Pn(pat,1));
-
-			len.do {
-				var n = buf[i];
-
-				if(n.size != 0) {
-					ev = Ppar(n).embedInStream;
-				} {
-					var myev;
-					myev = ev.deepCopy;
-					myev[\isRest] = true;
-					ev = Pn(myev,1).embedInStream;
-				};
-				i = (i+1) % quant;
-			};
-		}
-	})
-};
-);
-
-
-
-
-(
-SynthDef(\simple, { arg out=0, amp=0.1, gate=1, pan=0, spread=0.8, freq=261.6, doneAction=2;
-	var sig, sig1, sig2, sig3;
-	sig = SinOsc.ar(freq * [1,1.01,2.01,1.02,1/2] * (SinOsc.kr(3)*0.01+1));
-	sig = sig + LFTri.ar(freq * [1,1/2,1.01]);
-	sig = sig * EnvGen.ar(\adsr.kr(Env.adsr(0.01,0.1,0.8,0.1)),gate,doneAction:doneAction);
-	sig = Splay.ar(sig, spread, amp, pan);
-	sig = (-3).dbamp * sig;
-	Out.ar(out, sig);
-}).add;
-SynthDef(\saw, { arg out=0, amp=0.1, gate=1, pan=0, spread=0.8, freq=261.6, doneAction=2;
-	var sig, sig1, sig2, sig3;
-	var env;
-	sig = LFSaw.ar(freq * [1,1.01,2.01,1.02]);
-	sig = Pulse.ar(freq * [1,1.01,2,2.01,1.002]) + sig;
-	env = EnvGen.ar(Env.adsr(0.4,0.3,0.31,0.1),gate,doneAction:0);
-	sig = RLPF.ar(sig, \ffreq.kr(1000) * (env+0.5));
-	sig = sig * EnvGen.ar(\adsr.kr(Env.adsr(0.01,0.1,0.8,0.1)),gate,doneAction:doneAction);
-	sig = Splay.ar(sig, spread, amp, pan);
-	sig = FreeVerb.ar(sig,0.5,0.7);
-	sig = (-3).dbamp * sig;
-	Out.ar(out, sig);
-}).add;
-
-)
-
-
-(
-
-Pdef(\mol,
-
-	~molecular_box.(Pseq([4.5,8],inf), 16, 3,
-		Pseq([
-			Pbind(
-				\instrument, Pn(\simple,4),
-				\adsr, Pseq([
-					[ Env.adsr(0.1,0.1,0.8,0.4) ],
-					[ Env.adsr(0.4,0.4,0.6,0.2) ],
-				],inf),
-				\legato, Pkey(\legato) / 2,
-			),
-			Pbind(
-				\instrument, Pn(\saw,4),
-				\ffreq, Pseq([5000,1000,200,2000],inf),
-				\adsr, Pseq([
-					[ Env.adsr(0.1,0.4,0.4,0.3) ],
-				],inf),
-				\legato, Pkey(\legato) / 2,
-			),
-		],inf),
-
-		Pbind(
-			\degree, Pseq([
-				Pseq((0..13)),
-				Pseq((0..10)-4),
-				Pseq((5..1)),
-				Pseq((0..5)*2),
-				Pseq((20..10)),
-				Pseq((0..10)-10),
-			],inf),
-		);
-
-	),
-
-	Pbind(
-		\dur, 1/4,
-		\scale, Scale.minor,
-	)
-
-).play;
-
-)
-
-
-
-(
-var scale,fund;
-scale = [0,3,7];
-fork{
-	loop{
-		var t = [16,32].choose;
-		fund = 26+[0,3,7,10,14].choose;
-		fund.postln;
-		t.wait;
-	};
-};
-
-fork{
-	loop{
-		var t = 1/2;
-		var a,d,s,r,fa,fd,fs,fr,ratio,dtune,freq,
-		ffreq,vibrate,vibdepth,cutoff,amp;
-		freq = (scale.choose+fund+(12*(0..3).choose)).midicps;
-		vibrate = t/(1..10).choose;
-		vibdepth = (90..500).choose.reciprocal;
-		dtune = 1e-3; LFNoise0.kr(t,0.02,1);
-		cutoff = freq * (1.1,1.2..4).choose;
-		ratio = (0.99,0.991..1.01).choose;
-		amp = 1/4;
-
-		a = 3.0.rand/t;
-		s = 3.0.rand/t;
-		r = 3.0.rand/t;
-		fa = 3.0.rand/t;
-		fs = 3.0.rand/t;
-		fr = 3.0.rand/t;
-
-		play{
-			var env, fenv, sig, gate, vib;
-			gate = Line.kr(1,0,t);
-			env = EnvGen.kr(Env.linen(a,s,r),doneAction:2);
-			fenv = EnvGen.kr(Env.linen(fa,fs,fr));
-			freq = Line.kr(freq,freq*ratio,t);
-			vib = SinOsc.kr(vibrate).range(vibdepth.neg,vibdepth)+1;
-			freq = vib*freq;
-			//freq = freq.lag(t);
-			sig = Select.ar(2.rand,[
-				Pulse.ar([freq,freq*(1+dtune),freq*(1-dtune)],
-					LFNoise2.kr(t,0.5,0.5), 0.1).sum,
-				Saw.ar([freq,freq*(1+dtune),freq*(1-dtune)]).sum
-			]);
-			sig = sig.tanh * env;
-			ffreq = max(fenv*freq*12,cutoff)+100;
-			sig = MoogFF.ar(sig,ffreq,LFNoise2.kr(1/t,1.4,1.5)).tanh;
-			sig = RLPF.ar(sig,1e4,0.9).tanh;
-			sig = (-3).dbamp * sig;
-			Pan2.ar(sig*amp,LFNoise2.kr(t.rand));
-
-		};
-		t.wait;
-	};
-};
-)
 

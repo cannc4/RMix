@@ -1,7 +1,8 @@
 (
 ///////////////////////////////////////// CC START ////////////////////////////////////////////////
 
-m = MIDIOut(0, MIDIClient.destinations.at(0).uid);
+
+m = MIDIOut(0, MIDIClient.destinations.at(1).uid);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -400,12 +401,12 @@ Pdef(\track4synthpr1,
 
 
 Pdef(\track4synthpr2,
-	EventPatternProxy(Pbind(\type, \midi, \midiout, m,
+	Pbind(\type, \midi, \midiout, m,
 	\midicmd, \control,
 	\control, Pseq([0,127],
 		inf),
 	\chan,3,
-		\ctlNum, 17)));
+		\ctlNum, 17));
 
 
 Pdef(\track4synthpr3,

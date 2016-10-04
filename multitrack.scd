@@ -44,7 +44,7 @@ if ( ~test_Massaka == 1,
 if ( ~test_Sumanguru == 1,
 	    {
 		~buf_Sumanguru= Buffer.alloc(s, 65536, 1);
-		~buf_Sumanguru.write("~/Music/composition/multitracks/Sumanguru.aiff".standardizePath, "aiff", "int16", 0, 0, true);
+		~buf_Sumanguru.write("/Users/canince/Documents/SCmultitrack/Suman.aiff".standardizePath, "aiff", "int16", 0, 0, true);
 		~trk_Sumanguru = Synth("Sumanguru-Diskout", ["bufnum", ~buf_Sumanguru]);
 },);
 if ( ~test_Acid == 1,
