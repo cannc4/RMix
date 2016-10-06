@@ -11,12 +11,12 @@ SynthDef("AR1", { arg out=0, in=2;
 	var input;
 	input = SoundIn.ar(in);
 
-	input = (-20).dbamp * input;
+	input = (-10).dbamp * input;
 	Out.ar(out, [input,input]);
 
 }).add;
 SynthDef("AR1-Diskout", {arg bufnum;
-	var input = (-20).dbamp * In.ar(2);
+	var input = (-10).dbamp * In.ar(2);
 	DiskOut.ar(bufnum, input);
 }).add;
 
@@ -101,22 +101,42 @@ SynthDef("A8-Diskout", {arg bufnum;
 }).add;
 
 //////////////////////////////////// FX START ////////////////////////////////////
-
-SynthDef(\freeze,  { arg freeze = 1.1, obs= 0, ibs;
-	var chain1, chain2, frozen, inp,temp;
-	var	popFreq = EnvGen.ar(Env([3261, 410, 1000], [0.005, 0.01], curve: \exp));
-	inp  = In.ar(ibs,2).asArray;
-	temp =  Pulse.ar(500, 0.1, 0.7);
-	chain1 = FFT( LocalBuf( 8192 ! 2 ), inp );
-	//        chain1 = PV_MagFreeze( chain1, freeze );
-	chain2 = FFT( LocalBuf( 8192 ! 2 ), temp);
-	chain1 = PV_CopyPhase( chain1, chain2 );
-	//chain1 = PV_BinShift(chain1, 1, chain2);
+//        chain1 = PV_MagFreeze( chain1, freeze );
+//chain1 = PV_BinShift(chain1, 1, chain2);
 //	chain1 = PV_XFade(chain1, popFreq, 2 );
-	frozen = IFFT( chain1 ).asArray;
+//	var	popFreq = EnvGen.ar(Env([3261, 410, 1000], [0.005, 0.01], curve: \exp));
+SynthDef(\freeze,  { arg freeze = 1.1, obs= 0, ibs, freq=800, bufSize = 8192;
+	var chain1, chain2, frozen, inp,temp;
+	inp  = In.ar(ibs,2).asArray;
+	temp =  Pulse.ar(freq, 0.56, 0.90);
+	chain1 = FFT( LocalBuf( bufSize ! 2 ), inp );
+	chain2 = FFT( LocalBuf( bufSize ! 2 ), temp);
+	chain1 = PV_CopyPhase( chain1, chain2 );
+	frozen = IFFT( chain1 ).dup;
 	frozen = Pan2.ar(frozen,  FSinOsc.kr(2), 1, 0);
-	Out.ar( obs, (10).dbamp *frozen );
+	Out.ar( obs, (5).dbamp *frozen );
 }).add;
+// SynthDef("~test_Sumanguru", {arg bufnum, ibs=~b4;
+// 	var input = (-10).dbamp * ibs;
+// 	DiskOut.ar(bufnum, input);
+// }).add;
+
+SynthDef(\ring_mod, {arg ibs, obs=0, carrFreq = 440, modFreq = 2, amp = 0.06, which = 0;
+			var carrier, modulator, input, chain1, chain2;
+	input = In.ar(ibs);
+			carrier = Select.ar(which,
+				[
+					SinOsc.ar(Lag.kr(carrFreq)),
+					Blip.ar(Lag.kr(carrFreq), 5),
+					Saw.ar(Lag.kr(carrFreq))
+			]);
+			modulator = SinOsc.ar(Lag.kr(modFreq));
+	/*chain1 = FFT( LocalBuf( 8192 ! 2 ), input );
+	chain2 = FFT( LocalBuf( 8192 ! 2 ), modulator);
+	chain1 = PV_CopyPhase( chain1, chain2 );
+	modulator = IFFT( chain1 ).dup;*/
+	Out.ar(obs, (10).dbamp*( carrier * input ));
+		}).add;
 
 
 SynthDef(\reverb2, {arg ibs, obs=0, delaytime=0.01, decaytime=1, amp=1;
@@ -163,7 +183,7 @@ SynthDef(\dubecho,{ arg ibs, obs=0 , length = 1, fb = 0.8, sep = 0.012, amp = 1;
 	var magic;var real = 0.2;
 	var imag = 0.8;
 	var magicL;
-	var fft = 0.1;
+	var fft = 0.5;
 	var output = input + Fb({
 
 		arg feedback;
@@ -180,6 +200,24 @@ SynthDef(\dubecho,{ arg ibs, obs=0 , length = 1, fb = 0.8, sep = 0.012, amp = 1;
 
 	Out.ar(obs,magicL);
 }).add;
+
+
+
+
+
+//
+// SynthDef(\feedback_delay, { | inBus, outBus = 0, delaytime = 0.2, xfadetime = 0.2,
+// 	feedback = 0.3, mix = 0.3, amp = 0.3 |
+//
+// 	var in, src, sig, feed;
+// 	in = In.ar(inBus);
+// 	feed = LocalIn.ar(2);
+// 	src = Limiter.ar(XFadeDelay.ar(in + feed, 1, delaytime, xfadetime));
+// 	LocalOut.ar(src * feedback);
+// 	sig = src * amp;
+//
+// 	Out.ar(outBus, sig);
+// }).add;
 
 
 b = Buffer.alloc(s,s.sampleRate/(s.options.blockSize),1);
@@ -325,9 +363,6 @@ SynthDef(\clap, {
 ~b6 = Bus.audio(s);
 ~b7 = Bus.audio(s);
 ~b0=0;
-SynthDef("Sumanguru-Diskout", {arg bufnum;
-	DiskOut.ar(bufnum, In.ar(~b1));
-}).add;
 ~ar1 = Synth("AR1",~rytmGroup);
 ~ar2 = Synth("AR2", ~rytmGroup);
 ~ar3 = Synth("AR3",~rytmGroup);

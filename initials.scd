@@ -2,8 +2,9 @@
 Server.supernova;
 s.options.numOutputBusChannels = 2;
 s.options.numInputBusChannels = 10;
-s.options.outDevice = "Built-in Output";
-//s.options.outDevice = "Fireface UCX (23648323)";
+//s.options.outDevice = "Built-in Output";
+// s.options.outDevice = "Fireface UCX (23648323)";
+s.options.outDevice = "Fireface UFX (23646496)";
 
 s.options.inDevice = "Analog Rytm (Core Audio)";
 s.options.hardwareBufferSize = 256;
@@ -17,13 +18,13 @@ s.options.blockSize = 128;
 s.options.numBuffers = 2048;
 s.latency = 0.02;
 s.options.verbosity = -2;
-//MIDIClient.init;
-//MIDIIn.connectAll;
+MIDIClient.init;
+MIDIIn.connectAll;
 s.boot;
 s.waitForBoot({
 
-	// MIDIClient.destinations;
-	//"RMbind.scd".loadRelative;
+
+	"RMbind.scd".loadRelative;
 	"RMdefs.scd".loadRelative;
 //Logic for multitrack recordings
 	~test_DrumSmpl1 = 0;

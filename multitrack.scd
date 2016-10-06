@@ -45,7 +45,7 @@ if ( ~test_Sumanguru == 1,
 	    {
 		~buf_Sumanguru= Buffer.alloc(s, 65536, 1);
 		~buf_Sumanguru.write("/Users/canince/Documents/SCmultitrack/Suman.aiff".standardizePath, "aiff", "int16", 0, 0, true);
-		~trk_Sumanguru = Synth("Sumanguru-Diskout", ["bufnum", ~buf_Sumanguru]);
+		~trk_Sumanguru = Synth("Sumanguru-Diskout", ["bufnum", ~buf_Sumanguru, "ibs", ~b4]);
 },);
 if ( ~test_Acid == 1,
 	    {

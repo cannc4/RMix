@@ -2,7 +2,7 @@
 ///////////////////////////////////////// CC START ////////////////////////////////////////////////
 
 
-m = MIDIOut(0, MIDIClient.destinations.at(1).uid);
+m = MIDIOut(0, MIDIClient.destinations.at(0).uid);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1712,7 +1712,7 @@ Pdef(\track11sq,
         // just making it explicit here
     \midicmd, \noteOn,
     \midiout, m,    // must provide the MIDI target here
-    \chan,8,
+    \chan,10,
         // degree is converted to midinote, not just frequency
 	\degree,Pseq([0.2,0.5], inf),
 	\dur, Pseq([1, 1, 2, 1]/20, inf),
@@ -1728,7 +1728,7 @@ Pdef(\track12sq,
         // just making it explicit here
     \midicmd, \noteOn,
     \midiout, m,    // must provide the MIDI target here
-    \chan,10,
+    \chan,11,
         // degree is converted to midinote, not just frequency
 	\degree,Pseq([0.2,0.5], inf),
 	\dur, Pseq([1, 1, 2, 1]/20, inf),
