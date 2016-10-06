@@ -54,14 +54,14 @@ Pbind(
 	\instrument, "granular_sampling",
 	\trigger, 0,
 	\graindur, Pseq([0.33, 0.34, 0.26, 0.51], inf),
-	\sndbuf, b,
+	\sndbuf, ~granularBuffer,
 	\transp, Pseq([1, 1, 1, 1, 1, 1, 1, 1.5], inf),
 	\pos, Pseq([0.2, 0.11, 0.12, 0.14], inf),
 	\pan, Pwhite(-1, 1),
 	\amp, Prand([0.9, 1], inf),
 	\envbuf, -1,
 	\dur, Pseq([0.25, 0.125, 0.125, 0.6], inf);
-).stop;
+).play;
 )
 (
 SynthDef("granular_sampling", {arg trigger = 0, graindur = 0.2, sndbuf, transp = 1, pos = 0, pan = 0, envbuf = -1, amp = 1, gate = 1;
