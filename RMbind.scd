@@ -6,6 +6,48 @@ m = MIDIOut(0, MIDIClient.destinations.at(0).uid);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+Pdef(\granular1,
+	Pbind(
+	\instrument, "granular_sampling",
+	\trigger, 0,
+	\graindur, Pseq([Pseq([0.1], 15), 0.2], inf),
+	\sndbuf, ~grainBuf,
+	\transp, Pseq([ Pseq([1], 7), Prand([1, 0.9], 1) ], inf),
+	\pos, Pseq([0, 0.1, 0.2, 0.5, 0.1, 0.1, 0.32, 0.2322], inf) * Prand([1, 2], inf),
+	\pan, Pwhite(-0.5, 0.5),
+	\amp, Pwhite(0.8, 1),
+	\envbuf, -1,
+	\dur, Pwhite(0.8, 1);
+));
+
+
+Pdef(\granular2,
+	Pbind(
+	\instrument, \granular_sampling,
+	\trigger, 0,
+	\graindur, Pseq([0.5, 1, 0.5, 1], inf),
+	\sndbuf, ~grainBuf,
+	\transp, Pseq([1, 1, 1, 1], inf),
+	\pos, Pwhite(0,1),//Pseq([0.2, 0.11, 0.12, 0.14], inf),
+	\pan, Pwhite(-0.5, 0.5),
+	\amp, Prand([0.9, 1], inf),
+	\envbuf, -1,
+	\dur, Pseq([0.5, 1, 0.5, 1], inf);
+));
+
+Pdef(\granular2,
+	Pbind(
+	\instrument, \granular_sampling,
+	\trigger, 0,
+	\graindur, 0.15,
+	\sndbuf, ~grainBuf,
+	\transp, -12,
+	\pos, 0.6265,
+	\pan, 0,
+	\amp, 0.9,
+	\envbuf, 1,
+	\dur, 0.5;
+));
 //////////////////////////////////// TRACK1/BD ////////////////////////////////////////////////////
 
 
@@ -1563,9 +1605,8 @@ Pdef(\track1sq,
     \midiout, m,    // must provide the MIDI target here
     \chan,0,
         // degree is converted to midinote, not just frequency
-	\degree,Pseq([0.2,0.5], inf),
-	\dur, Pseq([1, 1, 2, 1], inf),
-
+	 \degree, Pseq([-7, Pwhite(0, 11, inf)], 1),
+    \dur, Pconst(4, Pwhite(1, 4, inf) * 0.25),
 	\amp, Pseq([1, 1, 2, 1], inf)
 
 ));
@@ -1579,8 +1620,8 @@ Pdef(\track2sq,
     \midiout, m,    // must provide the MIDI target here
     \chan,1,
         // degree is converted to midinote, not just frequency
-	\degree,Pseq([0.2,0.5], inf),
-	\dur, Pseq([1, 1, 2, 1], inf),
+	 \degree, Pseq([-7, Pwhite(0, 11, inf)], 1),
+    \dur, Pconst(4, Pwhite(1, 4, inf) * 0.25),
 
 	\amp, Pseq([1, 1, 1, 1], inf)
 ));
