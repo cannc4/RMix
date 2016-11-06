@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////  RMX                    ///////////////////////
-////////////////////////  Version 11             ///////////////////////
+////////////////////////  Version 20             ///////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -13,18 +13,50 @@
 (
  b = Bus.control(s, 1); b.set(880);
 b.set(10000);
-~pitchshift =Synth(\pitchshifter, [\ibs, ~recBus2], ~gr1);
+~pitchshift =Synth(\pitchshifter, [\ibs, ~recBus6], ~gr6);
 ~delayll2 = Synth(\delayll, [\ibs,~recBus2],~gr2);
-~delayll2.set(\delFed,0.99 );
-~delayll2.set(\dryWet, 0.5);
+~delayll8 = Synth(\delayll, [\ibs,~recBus8],~gr8);
+~delayll6 = Synth(\delayll, [\ibs,~recBus6],~gr6);
+~dubecho6 = Synth(\dubecho, [\ibs,~recBus6],~gr6);
+~dubecho4 = Synth(\dubecho, [\ibs,~recBus4],~gr4);
+~dubecho4.free
+~dubecho2 = Synth(\dubecho, [\ibs,~recBus2],~gr2);
+~dubecho2.set(\sep, 0.0000012);
+~dubecho2.set(\fb, 1);
+~dubecho2.set(\length, 0.5);
+~dubecho2.set(\amp,5);
+~dubecho8 = Synth(\dubecho, [\ibs,~recBus8],~gr8);
+~dubecho8.set(\sep, 0.000012);
+~dubecho8.set(\fb, 1);
+~dubecho8.set(\length, 0.09);
+~dubecho8.set(\amp,3);
+
+~dubecho4.set(\sep, 0.000012);
+~dubecho4.set(\fb, 1);
+~dubecho4.set(\length, 0.1);
+~dubecho4.set(\amp,10);
+~
+~dubecho4.free;
+~dubecho6.set(\amp, 2, \length, 0.5, \fb, 0.50, \sep, 0.00012);
+~delayll6.set(\freqLP,9000);
+~delayll6.set(\delme,0.9);
+~delayll6.set(\delFed,0.9);
+~delayll6.set(\freqHP,5000);
+~delayll6.free
+~delayll7.free
+~delayll8.free
+~delayll6.free
+~delayll7.set(\delFed,0.99 );
+~delayll7.set(\dryWet, 0.5);
 ~delayll2.free
 
-~delayll3 = Synth(\delayll, [\ibs,~recBus3,\freqLP,8000],~gr3);
+~delayll3 = Synth(\delayll, [\ibs,~recBus3],~gr3);
 ~delayll3.free
-~delayll2.set(\freqLP, 2000);
+~delayll3.set(\freqLP, 10000);
+~delayll3.set(\random, 10);
 // ~freeze1= Synth(\freeze, [ \ibs, ~recBus1],~ar1, \addAfter);
 ~nReverb1 = Synth(\nReverb, [\ibs, ~recBus1], ~gr1);
-~nReverb5 = Synth(\nReverb, [\ibs, ~recBus5], ~gr5);
+~nReverb3 = Synth(\nReverb, [\ibs, ~recBus5], ~gr5);
 ~nReverb5.free
 ~nReverb1.free
 ~nReverb2.free
@@ -33,32 +65,75 @@ b.set(10000);
 ~nReverb3.set(\freqHP, 2000);
 ~nReverb4 = Synth(\nReverb, [\ibs, ~recBus4], ~gr4);
 ~nReverb4.free
-~freeze4= Synth(\freeze, [\ibs, ~recBus4], ~gr4);
+~nReverb6 = Synth(\nReverb, [\ibs, ~recBus6], ~gr6);
+~nReverb6.free;
+~freeze3= Synth(\freeze, [\ibs, ~recBus3], ~gr3);
+~freeze3.free
+~freeze2.free
+~freeze2= Synth(\freeze, [\ibs, ~recBus2], ~gr2);
+~freeze1= Synth(\freeze, [\ibs, ~recBus1], ~gr1);
+~freeze1.free
+~freeze6= Synth(\freeze, [\ibs, ~recBus6], ~gr6);
+~freeze6.free
+~freeze7= Synth(\freeze, [\ibs, ~recBus7], ~gr7);
+~freeze7.free
 
-~freeze4.free
 
-~scene3.play();
 ~scene3.stop();
+~scene3.play(~metronome44, protoEvent: Event.default, quant: Quant(1));
 ~scene3 = Task({
 	var delta;
 
 delta = rrand(0.1, 1) * 3;
 loop{
 
-~nReverb4 = Synth(\nReverb, [\ibs, ~recBus4], ~gr4);
+
+		~delayll2= Synth(\delayll, [\ibs,~recBus2,\freqLP,2000],~gr2);
+		0.2.wait;
+		~nReverb1 = Synth(\nReverb, [\ibs, ~recBus1], ~gr1);
 		delta.wait;
-		~nReverb4.free;
+		~nReverb3 = Synth(\nReverb, [\ibs, ~recBus3], ~gr3);
+
+
+
 delta.wait;
 delta.yield;
 
-
-		~delayll3 = Synth(\delayll, [\ibs,~recBus3,\freqLP,2000],~gr3);
+		~delayll3.free;
+		~delayll3 = Synth(\delayll, [\ibs,~recBus3,\freqLP,8000],~gr3);
+				~dubecho2 = Synth(\dubecho, [\ibs,~recBus2],~gr2);
 		delta.wait;
+Pbindef(\track1sq, \dur,Pbjorklund2(3, 8, inf)/8 );
+		Pbindef(\track2sq, \dur,Pbjorklund2(4, 8, inf)/8 );
+		delta.wait;
+Pbindef(\track3sq, \dur,Pbjorklund2(1, 8, inf)/8 );
+~nReverb1.free;
 ~delayll3.free;
+				~delayll6= Synth(\delayll, [\ibs,~recBus6,\freqLP,8000],~gr6);
 
+		Pbindef(\track2sq, \dur,Pbjorklund2(5, 8, inf)/8 );
 		delta.wait;
 delta.yield;
+		~dubecho2.free;
+		~nReverb3.free;
+		~delayll2.free;
+		~nReverb3.free;
+Pbindef(\track1sq, \dur,Pbjorklund2(3, 8, inf)/4);
+Pbindef(\track2sq, \dur,Pbjorklund2(4, 8, inf)/4 );
+Pbindef(\track3sq, \dur,Pbjorklund2(5, 8, inf,4)/4);
+			~dubecho3 = Synth(\dubecho, [\ibs,~recBus3],~gr3);
+Pbindef(\track4sq, \dur,Pbjorklund2(21, 32, inf)/4);
 
+		5.wait;
+		~delayll2= Synth(\delayll, [\ibs,~recBus2,\freqLP,500],~gr2);
+		1.wait;
+		~dubecho3.free;
+		~delayll2.free;
+		~nReverb1.free;
+		~nReverb3.free;
+		~delayll6.free;
+		~delayll3.free;
+		1.wait;
 	}
 
 
@@ -69,13 +144,14 @@ delta.yield;
 ~ringMod = Synth(\ringMod, [\ibs, ~recBus1],~gr1);
 ~ringMod3= Synth(\ringMod, [\ibs, ~recBus3],~gr3);
 ~ringMod3.set(\freq, 0.0001);
-~ringMod3.free
+~ringMod3.free;
 ~delayll2 = Synth(\delayll, [\ibs,~recBus2],~gr2);
 ~delayll7.set(\delFed, 0.1);
 ~nReverb2 = Synth(\nReverb, [\ibs, ~recBus2], ~gr2);
 ~nReverb7 = Synth(\nReverb, [\ibs, ~recBus7], ~gr7);
-~nReverb8 = Synth(\nReverb, [\ibs, ~recBus8],~ar8,\addAfter);
-~blipDelay7= Synth(\blipDelay, [\ibs, ~recBus8],~ar8,\addAfter);
+~nReverb8 = Synth(\nReverb, [\ibs, ~recBus8],~ar8);
+~blipDelay6= Synth(\blipDelay, [\ibs, ~recBus6],~gr6);
+~blipDelay6.free;
 ~blipDelay4= Synth(\blipDelay, [\ibs, ~recBus4],~gr4);
 
 ~blipDelay8.free
@@ -125,21 +201,20 @@ s.plotTree
 // ~playback = Synth(\playback, [\bufnum, 0, \atk , 0.01, \rel, 0.1 ]);
 
 //RECORD//
-(
-~test_DrumSmpl1 = 1;
-~test_DrumSmpl2 = 1;
-~test_DrumSmpl3 = 1;
-~test_DrumSmpl4 = 1;
-~test_DrumSmpl5 = 1;
-~test_DrumSmpl6 = 1;
-~test_DrumSmpl7 = 1;
-~test_DrumSmpl8 = 1;
 
-"multitrack.scd".loadRelative;
-)
 //CLOSE//
+(
+pattern = Pbind(
+		\dur, 0.1,
+		\degree, Pseq([0,1,2,3,4,5,6,7])
+);
 
-"multitrackclose.scd".loadRelative;
+Pstretchp(
+	Pseq([1,2,3], inf), 	// a value pattern as a source of values for multiplying with stretch
+	pattern				// the pattern to be modified
+).play
+)
+
 
 s.queryAllNodes
 //
@@ -156,7 +231,15 @@ s.queryAllNodes
 // SynthDescLib.global.read;
 // SynthDescLib.global.browse;
 // )
+Pbindef(\track1sq, \dur,Pbjorklund2(7, 16, inf)/8 );
+Pbindef(\track1sq, \amp, 1 );
+Pbindef(\track2sq, \dur,Pbjorklund2(4, 16, inf)/8 );
+Pbindef(\track3sq, \dur,Pbjorklund2(3, 8, inf)/8 );
+Pbindef(\track3sq, \dur,Pbjorklund2(8, 8, inf)/8 );
+Pbindef(\track2sq, \dur,Pbjorklund2(Pseq([7, 14], inf), 32, inf)/8);
+Pbindef(\track2sq, \dur,Pbjorklund2(Pseq([4, 6], inf), 16, inf)/8);
 
+Pbindef(\track1sq, \dur,Pbjorklund2(Pseq([7, 7, 14], inf), 32, inf, 10)/8);
 /*\amp, Pseq([0.2, 0.15, 0.1, 0.05, 0],
 inf)*/
 // \degree, Pn(Pseries(0, Pwrand([Pwhite(-3,3,inf).round(1),1],[32,1],inf), 4),inf)-1 + [0,2,-1,-14],
@@ -168,6 +251,53 @@ inf)*/
 //Pseq([Pseq([100, 200, 300], 2), 400, 500, 600],inf)
 
 //PdurStutter
+Pbindef(\track3sq, \dur,Pbjorklund2(17, 32, inf)/8);
+"multitrackclose.scd".loadRelative;
+~freeze7.free
+Pbindef(\track2sq, \dur,Pbjorklund2(3, 8, inf)/8);
+Pbindef(\track1sq, \dur,Pbjorklund2(2, 8, inf)/8);
+Pbindef(\track3sq, \dur,Pbjorklund2(1, 8, inf)/8 );
+Pbindef(\track2sq,\degree,Pseq([-0.2,0.2], inf));
+Pbindef(\track2sq,\amp,Pseq([1,0.6], inf));
+Pbindef(\track3sq, \dur,Pbjorklund2(2, 8, inf)/4);
+Pbindef(\track3sq,\degree,Pseq([-0.2,0.2,0.5], inf));
+Pbindef(\track3sq,\amp,Pseq([1.5,1.1], inf));
+Pbindef(\track4sq, \dur,Pbjorklund2(21, 32, inf)/8);
+Pbindef(\track4sq, \dur,Pbjorklund2(5, 8, inf)/8);
+Pbindef(\track4sq, \degree,Pseq([-0.2,0.2,-0.4], inf));
+Pbindef(\track5sq, \dur,Pbjorklund2(1, 8, inf)/4);
+Pbindef(\track5sq,\degree,Pseq([-0.4,0.2], inf));
+Pbindef(\track6sq, \dur,Pbjorklund2(3, 16, inf)/4);
+Pbindef(\track6sq, \dur,Pbjorklund2(6, 8, inf)/4 );
+Pbindef(\track6sq,\degree,Pseq([0.6,0.8,0,2,-0.2], inf));
+Pbindef(\track7sq, \dur,Pbjorklund2(10, 16, inf)/8 );
+Pbindef(\track7sq, \dur,Pbjorklund2(11, 16, inf)/4 );
+Pbindef(\track7sq,\degree,Pseq([-0.4,0.2], inf));
+Pbindef(\track7sq,\degree, Pseg(Pseq([0.2,0.1,0.25,0.2,-0.4],inf) ));///////
+Pbindef(\track8sq, \dur,Pbjorklund2(16, 16, inf)/8 );
+Pbindef(\track8samplepr1,\control, Pseq([30,51,0,], inf) );
+Pbindef(\track8samplepr1).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track9sq, \dur,Pbjorklund2(8, 16, inf)/16 );
+Pbindef(\track10sq, \dur,Pbjorklund2(7, 16, inf)/16);
+Pbindef(\track11sq, \dur,Pbjorklund2(3,8, inf)/8 );
+Pbindef(\track12sq, \dur,Pbjorklund2(1, 32, inf)/8 );
+Pbindef(\track1sq).play(~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track2sq).play(~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track3sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track4sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track5sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track6sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track7sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track8sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track9sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track10sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track11sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track12sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+
+
+
+
+Pbindef(\track4samplepr5,\control, Pseq([30,51,53,45], inf) );
 
 
 Pbindef(\track9sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(3));
@@ -195,7 +325,7 @@ Pbindef(\track1sq, \amp, Pseq([1,0.5,0,1,0.5], inf));
 Pbindef(\track1sq, \amp, Pn([0,0.9,0,1,1], inf));
 Pbindef(\track1sq, \dur, Pseq([Pfunc({~tc* 0.2}),Pfunc({~tc* 0.4})],inf));
 Pbindef(\track1sq, \dur, Pseq([Pseq(~tempos, 2),inf],inf));
-Pbindef(\track1sq, \dur, Pclutch(Pwhite(0.25, 0.29, inf), Pdiff(Pkey(\degree)).abs > 0));
+Pbindef(\track1sq, \dur,  Pbjorklund2(3, 8, inf)/2 );
 Pbindef(\track1sq,\dur,  Pseg(Pseq([~tc*0.25,~tc*0.2,~tc*0.25],inf)));
 Pbindef(\track1sq,\dur,  Pseg(Pseq([~tc*0.25,~tc*0.2,~tc*0.25],inf)));
 Pbindef(\track1sq, \dur, Pclutch(Pwhite(~tc, ~tc*0.25, inf), Pdiff(Pkey(\degree)).abs > 0));
@@ -208,7 +338,7 @@ Pbindef(\track1samplepr1,\control,Pclutch(Pwhite(12, -12, inf), Pdiff(Pkey(\dur)
 Pbindef(\track1samplepr1,\control, Pseq([Pseq([12, -12, 0], 12), -12, 12],inf));
 Pbindef(\track1samplepr1,\dur, 0.0);
 Pbindef(\track1samplepr7).stop;
-Pbindef(\track1samplepr1).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track1samplepr8).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
 
 Pbindef(\track1sq).play(~tc);
 Pbindef(\track8sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
@@ -219,7 +349,7 @@ Pbindef(\track2sq, \amp, Pseq([1,1,0,1,0], inf));
 Pbindef(\track2sq, \amp, Pwhite(0.4,1.1));
 Pbindef(\track2sq, \dur, Pseq([Pseq([1/16], 15), Pseq([1/64, 1/64, 1/32], 1)], inf) * 3);
 Pbindef(\track2sq, \degree, Pn(Pseries(0, Pwrand([Pwhite(-3,3,inf).round(1),1],[32,1],inf), 4),inf)-1 + [0,2,-1,-14]);
-Pbindef(\track2sq, \dur, Pseq([(~tc* 0.2),(~tc)],inf));
+Pbindef(\track2sq, \dur, Pbjorklund2(3, 8, inf)/2);
 Pbindef(\track2sq, \amp, Pseq([4, [5,2,2]].convertRhythm / 2, inf));
 Pbindef(\track2sq,\amp, Pseg(Pseq([0.1,0.4,2,0.9,0.8],inf) ));//
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.1,0.4,1,0.9,0.8],inf) ));////////////////////
@@ -244,7 +374,7 @@ Pbindef(\track3samplepr8).play(clock: ~metronome44, protoEvent: Event.default, q
 Pbindef(\track2samplepr8,\control, Pseg(Pseq([0.02,0.9,0.05,0.7,0.1,0.08]*100,inf) ));
 
 
-Pbindef(\track3sq, \dur, Pseq([Pseq([0.1, 0.2, 0.3], 2), 0.4, 0.5, 0.6]/2,inf));
+Pbindef(\track3sq, \dur,Pbjorklund2(3, 8, inf)/2 );
 Pbindef(\track3sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
 Pbindef(\track3sq, \amp, Pseq([1,1,0,1,0], inf));
 Pbindef(\track3sq, \amp, Pn([1,0,1,0,1], inf));
@@ -279,7 +409,7 @@ Pbindef(\track4sq,\dur, Pseg(Pseq([0.1,0.4,1,0.9,1.3],inf) ));
 Pbindef(\track4sq, \dur, Pseq([0.4,0.2,0.1,0.1,0.1], inf));
 Pbindef(\track4sq, \dur, Pseq([0.1,0.1,0.1,0.1,0.1]*2, inf));
 Pbindef(\track4sq, \amp, Pseq([0.9,0,1, 0.8,0,9], inf));
-Pbindef(\track4sq,\degree, Pseg(Pseq([0.1,0.4,10,0.9,1.3],inf) ));
+Pbindef(\track4sq,\degree, Pseg(Pseq([0.1,00.9,1.3],inf) ));
 Pbindef(\track4sq, \dur, Pclutch(Pwhite(0.2, 0.9, inf), Pdiff(Pkey(\degree)).abs > 0));
 Pbindef(\track4sq, \degree, Pn(Pseries(0, Pwrand([Pwhite(-3,3,inf).round(1),1],[32,1],inf), 4),inf)-1 + [0,2,-1,-14]);
 Pbindef(\track4sq, \degree,Pseq([[100, 200, 300], [160,
@@ -290,7 +420,7 @@ Pbindef(\track4sq, \amp, Pseq([0.2, 0.15, 0.1, 0.05, 0],
 	inf);)
 Pbindef(\track4sq,\dur,  Pseq([4, [5,2,1]].convertRhythm / 2, inf));
 Pbindef(\track4samplepr8).play();
-Pbindef(\track4synthpr2,\control, Pseq([120,0,125,0,120,0], inf) );
+Pbindef(\track4samplepr5,\control, Pseq([120,0,125,0,120,0], inf) );
 Pbindef(\track4synthpr2,\control,Pclutch(Pwhite(120, 100, inf), Pdiff(Pkey(\dur)).abs > 0));
 Pbindef(\track4synthpr5).play();
 
@@ -360,7 +490,7 @@ Pbindef(\track4sq, \dur, Pclutch(Pwhite(0.2, 0.9, inf), Pdiff(Pkey(\degree)).abs
 Pbindef(\track6sq, \dur, Pclutch(Pwhite(0.1, 0.2, inf), Pdiff(Pkey(\degree)).abs > 0));
 Pbindef(\track6sq,\dur, Pseq([0.2,0.4,0.2,0.2],inf));
 Pbindef(\track4samplepr8).play();
-Pbindef(\track4synthpr2,\control, Pseq([120,0,125,0,120,0], inf) );
+Pbindef(\track4synthpr2,\control,Pbjorklund2(11, 16, inf)/2  );
 Pbindef(\track5synthpr2,\control,Pclutch(Pwhite(120, 100, inf), Pdiff(Pkey(\dur)).abs > 0));
 Pbindef(\track5samplepr1,\control,Pclutch(Pwhite(120, 80, inf), Pdiff(Pkey(\dur)).abs > 0));
 Pbindef(\track5samplepr1).play();
@@ -457,14 +587,14 @@ Pbindef(\track2sq,\degree,Pswitch([Pwhite(7, 14, inf), Pwhite(-7, 0, inf)], Pfun
 ~ringMod.set(\carrFreq, 1);
 ~ringMod.set(\which, 0);
 (
-~delayll.set( \out, 0, \gate, 1, \freqHP, 2000,\freqLP, 1000, \filtRes, 0.2 ,\delme, 0.2, \delRes, 0.2 ,\delRez, 2, \delFlt, 2000,\delTim , 0.5 ,\delFed , 0.9 ,\lfoFrq , 10, \lfoAmt , 2, \dryWet , 1 , \lagKarme , 0.2);
+~delayll3.set( \out, 0, \gate, 1, \freqHP, 2000,\freqLP, 1000, \filtRes, 0.2 ,\delme, 0.2, \delRes, 0.2 ,\delRez, 2, \delFlt, 2000,\delTim , 0.5 ,\delFed , 0.9 ,\lfoFrq , 10, \lfoAmt , 2, \dryWet , 1 , \lagKarme , 0.2);
 
 
-~delayll.set( \out, 0, \gate, 1, \freqHP, 2000,\freqLP, 8000, \filtRes, 0.2 ,\delme, 0.9, \delRes, 0.2 ,\delRez, 2, \delFlt, 6000,\delTim , 0.2 ,\delFed , 2 ,\lfoFrq , 1, \lfoAmt , 1, \dryWet , 1 , \lagKarme , 0.2);
+~delayll3.set( \out, 0, \gate, 1, \freqHP, 2000,\freqLP, 8000, \filtRes, 0.2 ,\delme, 0.9, \delRes, 0.2 ,\delRez, 2, \delFlt, 6000,\delTim , 0.2 ,\delFed , 2 ,\lfoFrq , 1, \lfoAmt , 1, \dryWet , 1 , \lagKarme , 0.2);
 
 
 
-~delayll.set( \out, 0, \gate, 1, \freqHP, 10,\freqLP, 8000, \filtRes, 0.2 ,\delme, 0.9, \delRes, 0.2 ,\delRez, 2, \delFlt, 60000,\delTim , 1.5 ,\delFed , 1.5 ,\lfoFrq , 1000, \lfoAmt , 0.4, \dryWet , 1 , \lagKarme , 0.5);
+~delayll3.set( \out, 0, \gate, 1, \freqHP, 10,\freqLP, 8000, \filtRes, 0.2 ,\delme, 0.9, \delRes, 0.2 ,\delRez, 2, \delFlt, 60000,\delTim , 1.5 ,\delFed , 1.5 ,\lfoFrq , 1000, \lfoAmt , 0.4, \dryWet , 1 , \lagKarme , 0.5);
 
 
 )

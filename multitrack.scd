@@ -45,6 +45,12 @@ if ( ~test_DrumSmpl8 == 1,
 		~buf_DrumSmpl8.write("/Users/canince/Documents/SCmultitrack/AR8.aiff".standardizePath, "aiff", "int16", 0, 0, true);
 		~trk_DrumSmpl8 = Synth(\AR8Diskout, ["bufnum", ~buf_DrumSmpl8],~gr8);
 });
+if ( ~test_Master == 1,
+	    {
+		~masterBuf= Buffer.alloc(s, 65536, 1);
+		~masterBuf.write("/Users/canince/Documents/SCmultitrack/MasterTape.aiff".standardizePath, "aiff", "int16", 0, 0, true);
+		~trk_Master = Synth(\AR8Diskout, ["bufnum", ~masterBuf]);
+});
 
 
 )
