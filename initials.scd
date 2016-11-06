@@ -43,11 +43,43 @@ s.waitForBoot({
 	~test_DrumSmpl6 = 0;
 	~test_DrumSmpl7 = 0;
 	~test_DrumSmpl8 = 0;
+<<<<<<< HEAD
 	~test_Master= 0;
 
 
 	//Tidal
 	SuperDirt.start;
+=======
+	~test_freeze = 0;
+	~test_delay = 0;
+	~test_ringMod = 0;
+	~test_dubecho = 0;
+
+
+	//
+	// ~test_Etna1 = 0;
+	// ~test_Etna2 = 0;
+	// ~test_Etna3 = 0;
+	// ~test_Etna4 = 0;
+	// ~test_Etna5 = 0;
+	// ~test_Etna6 = 0;
+	//
+	// ~test_Massaka = 0;
+	// ~test_SumanGuru = 0;
+	// ~test_Acid = 0;
+	// ~test_P5pwm = 0;
+	// ~test_Lumbricost = 0;
+	//
+	// ~test_SOSkick = 0;
+	// ~test_SOShats = 0;
+	// ~test_SOSsnare = 0;
+	// ~test_SOStom = 0;
+	// ~test_DPG1 = 1;
+	// ~test_DPG2 = 1;
+
+
+
+>>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
 	v = s.volume;
 	v.volume = -3;
 
