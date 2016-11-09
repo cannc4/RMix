@@ -1,12 +1,13 @@
-//////////////////////////////////// FX START ////////////////////////////////////
+//////////////////////////////////// FX ////////////////////////////////////
 (
-// chain1 = PV_MagFreeze( chain1, freeze );
-// chain1 = PV_BinShift(chain1, 1, chain2);
-// chain1 = PV_XFade(chain1, popFreq, 2 );
-// var popFreq = EnvGen.ar(Env([3261, 410, 1000], [0.005, 0.01], curve: \exp));
+
+~emp = Bus.audio(s,1);
+
+~defNum = 0;
+//////////////////////////////////// DELAY ////////////////////////////////////
 
 SynthDef(\delayll, {arg ibs,  gate= 1, freqHP= 20, freqLP= 20000, filtRes=0.5, delme = 0.003, delRes = 0.6, delRez = 0.22,ofBool=1,
-	delFlt = 10000, delTim = 2 ,delFed = 0.5, lfoFrq = 1, lfoAmt = 1, dryWet = 0.5, lagKarme = 0.12;
+	delFlt = 10000, delTim = 2 ,delFed = 0.5, lfoFrq = 1, lfoAmt = 1, dryWet = 0.5, lagKarme = 0.12, defNum;
 	var source, limiting, rhpf, rlpf, delayHotLine, delayFiltLine,	delayLFOLine, delayDryWet;
 	source = In.ar(ibs);
 	source = LeakDC.ar(source);
@@ -18,12 +19,69 @@ SynthDef(\delayll, {arg ibs,  gate= 1, freqHP= 20, freqLP= 20000, filtRes=0.5, d
 	delayFiltLine = IIRFilter.ar(rlpf, Lag2.ar(Fold.ar(delayLFOLine,10,20000),lagKarme),delRez);
 	delayHotLine = CombC.ar(delayFiltLine, Lag2.kr(delTim,1.9), Lag2.kr(delTim,1.9),delFed);
 	delayDryWet = XFade2.ar(rlpf,delayHotLine,dryWet);
-	delayDryWet = (2).dbamp * delayDryWet;
-		DetectSilence.ar(delayDryWet+ DC.ar(ofBool),0.2,doneAction:2);
+	delayDryWet = (defNum).dbamp * delayDryWet;
+	DetectSilence.ar(delayDryWet+ DC.ar(ofBool),0.2,doneAction:2);
 	ReplaceOut.ar(ibs, delayDryWet);
 }).add;
 
+
+
+SynthDef(\dubecho,{ arg ibs, length = 0.1, fb = 0.6, sep = 0.00012, hpFreq = 400, lpFreq = 5000, ofBool = 1 , defNum;
+	var input = In.ar(ibs);
+	var magic;
+	var real = 0.2;
+	var imag = 0.8;
+	var magicL;
+	var fft = 0.5;
+	var output = input + Fb({
+		arg feedback;
+		var left,right;
+		magic = LeakDC.ar(feedback*fb + input);
+		magic = HPF.ar(magic, hpFreq);
+		magic = LPF.ar(magic, lpFreq);
+		magic = magic.tanh;
+		#left, right = magic;
+		magic = [DelayC.ar(left, 1, LFNoise2.ar(12).range(0,sep)), DelayC.ar(right, 1, LFNoise2.ar(12).range(sep,0))];
+	},length);
+	magic = (defNum).dbamp * magic;
+	DetectSilence.ar(magic+ DC.ar(ofBool),0.1,doneAction:2);
+	ReplaceOut.ar(ibs,magic);
+
+}).add;
 ///////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////// REVERB ////////////////////////////////////
+
+SynthDef(\nReverb,{arg ibs, maxDelay=0.181, preDelay=0.08, decay=2, numRefl=8, random=0.1, ofBool=1, amp =1, defNum;
+
+	var input, output, new, dlys, numChan;
+	#numChan, maxDelay, preDelay, decay, numRefl, random = #[8, 0.219, 0.0008, 12, 24, 0.5];
+	input = In.ar(ibs);
+	new = input;
+	dlys = Array.fill(numRefl, {
+		new = AllpassN.ar(new, maxDelay,Array.fill(numChan, { random.rand }) + preDelay, decay);
+	});
+	output =  Mix.ar((((defNum).dbamp * dlys) * Array.series(numRefl, 1, (numRefl+1).reciprocal.neg)));
+	DetectSilence.ar(output+ DC.ar(ofBool),0.01,doneAction:2);
+	ReplaceOut.ar(ibs, output);
+}).add;
+
+
+SynthDef(\GVReverb, {arg ibs, roomsize = 243, revtime = 1, damping = 0.1, inputbw = 0.34, defNum,
+	spread = 15, drywet= 0, earlylevel = -11, taillevel= -9, ofBool = 1 ;
+
+	var input = In.ar(ibs);
+	var output = GVerb.ar(input,roomsize,revtime,damping,inputbw,spread, drywet,earlylevel.dbamp,taillevel.dbamp,roomsize);
+
+	output = (defNum).dbamp * output;
+	DetectSilence.ar(output+ DC.ar(ofBool),0.01,doneAction:2);
+	ReplaceOut.ar(ibs,output);
+
+}).add;
+
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
 
 SynthDef(\freeze,  { arg freeze = 800, ibs, freq=440, bufSize = 1024;
 	var chain1, chain2, frozen, inp,temp;
@@ -41,10 +99,6 @@ SynthDef(\freeze,  { arg freeze = 800, ibs, freq=440, bufSize = 1024;
 	ReplaceOut.ar( ibs, frozen);
 }).add;
 
-///////////////////////////////////////////////////////////////////////////
-
-
-
 SynthDef(\ringMod, {arg ibs, carrFreq = 440, modFreq = 2, amp = 0.06, which = 0;
 	var carrier, modulator, input, chain1, chain2, output;
 	input = In.ar(ibs);
@@ -59,53 +113,6 @@ SynthDef(\ringMod, {arg ibs, carrFreq = 440, modFreq = 2, amp = 0.06, which = 0;
 	// /Out.ar( ~recBus11, output);
 	ReplaceOut.ar( ibs, output);
 }).add;
-///////////////////////////////////////////////////////////////////////////
-
-// SynthDef(\nReverb,{arg ibs, maxDelay=0.181, preDelay=0.08, decay=2, numRefl=8, random=0.1, ofBool=1;
-//
-// 	var numChan=2;
-// 	var sig, new, dlys;
-// 	#numChan, maxDelay, preDelay, decay, numRefl, random = #[8, 0.219, 0.0008, 12, 24, 0.5];
-// 	sig = In.ar(ibs);
-// 	new = sig;
-// 	dlys = Array.fill(numRefl, {
-// 		new = AllpassN.ar(new, maxDelay,Array.fill(numChan, { random.rand }) + preDelay, decay);
-// 	});
-// 	Mix.ar(dlys * Array.series(numRefl, 1, (numRefl+1).reciprocal.neg));
-// 	dlys = (2).dbamp * dlys;
-// 	DetectSilence.ar(dlys+ DC.ar(ofBool),0.4,doneAction:2);
-// 	ReplaceOut.ar(ibs, dlys);
-// }).add;
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-SynthDef(\dubecho,{ arg ibs, length = 0.1, fb = 0.9, sep = 0.00012, amp = 3, hpFreq = 400, lpFreq = 5000, ofBool = 1;
-	var input = In.ar(ibs);
-	var magic;var real = 0.2;
-	var imag = 0.8;
-	var magicL;
-	var fft = 0.5;
-	var output = input + Fb({
-		arg feedback;
-		var left,right;
-		magic = LeakDC.ar(feedback*fb + input);
-		magic = HPF.ar(magic, hpFreq);
-		magic = LPF.ar(magic, lpFreq);
-		magic = magic.tanh;
-		#left, right = magic;
-		magic = [DelayC.ar(left, 1, LFNoise2.ar(12).range(0,sep)), DelayC.ar(right, 1, LFNoise2.ar(12).range(sep,0))];
-	},length);
-	magic = magic * amp;
-	magic = (-2).dbamp * magic;
-	DetectSilence.ar(magic+ DC.ar(ofBool),0.4,doneAction:2);
-	ReplaceOut.ar(ibs,magic);
-}).add;
-
-////////////////////////////////////////////////////////////////////////////
-
 
 SynthDef(\audioPitchShiftDelay, { arg ibs,obs = 0, ratio = 1, delayTime = 0.05;
 	var in, retune1, retune2, delayMod, trig, samplePeriod, transNumber;
@@ -123,4 +130,17 @@ SynthDef(\audioPitchShiftDelay, { arg ibs,obs = 0, ratio = 1, delayTime = 0.05;
 	ReplaceOut.ar(ibs,retune2);
 
 }).add;
+
+~defNumHold = 0;
+~evalNum = {
+
+
+	~defNumHold = ~defNumHold+2;
+	~defNum = 1/~defNumHold;
+};
+
+
+
+
+
 )
