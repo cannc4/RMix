@@ -49,7 +49,6 @@ s.waitForBoot({
 	//Tidal
 	SuperDirt.start;
 	v = s.volume;
-	v.volume = -3;
 
 });
 )

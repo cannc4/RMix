@@ -1,35 +1,57 @@
-import Sound.Tidal.MIDI.Context
-displayOutputDevices >>= putStrLn
-devices <- midiDevices
+-- RMS - ANALOG RYTM --
+----------------------------
+t1 clutch $ sound "[hh*4, odx(3,8)]"
+d3 $ sound (samples "hc*8" (iter 4 $ run 4))
+t3 anticipate $ sound (samples "bd(3,8)" (run 3))
+t1 anticipate $ sound (samples "bd(3,8)" (run 3))
+t2 anticipate $ sound (samples "bd(3,8)" (run 3))
 
-m1 <- midiStream devices "Analog Rytm Elektron MIDI" 1 synthController
-m2 <- midiStream devices "Analog Rytm Elektron MIDI" 2 synthController
-m3 <- midiStream devices "Analog Rytm Elektron MIDI" 3 synthController
-m4 <- midiStream devices "Analog Rytm Elektron MIDI" 4 synthController
-m5 <- midiStream devices "Analog Rytm Elektron MIDI" 5 synthController
-m6 <- midiStream devices "Analog Rytm Elektron MIDI" 6 synthController
-m7 <- midiStream devices "Analog Rytm Elektron MIDI" 7 synthController
-m8 <- midiStream devices "Analog Rytm Elektron MIDI" 8 synthController
-m9 <- midiStream devices "Analog Rytm Elektron MIDI" 9 synthController
-m10 <- midiStream devices "Analog Rytm Elektron MIDI" 10 synthController
-m11 <- midiStream devices "Analog Rytm Elektron MIDI" 11 synthController
-m12 <- midiStream devices "Analog Rytm Elektron MIDI" 12 synthController
+t2 (xfadeIn 4) $ sound (samples "bd(3,8)" (run 3))
+d2 $ sound (samples "hh*8" (iter 2 $ run 4))
+t1 (xfadeIn 1) $ sound "bd(5,8) "
+d7 $ slowspread slow [1,1.5,1.125] $ slowspread density [12,6,3,1.5] $ s "cp"
+d5 $ foldEvery [2,4,6,8,10] (density 1.5) $ foldEvery [3,5,7,9,11] (slow 1.5) $ sound "sn cp bd drum"`
+m1 $ note "[[c2 c1 c3] c3#]"
+m2 $ every 2 (density 2)  $ note "[[c2 c3] c2]" # synth6 "0.1 0.9 0.2" # sampstart "0.01 0.0" # samptune "0.5 0.7"  # filtfreq "0.5 0.3"
+# synth7 "0.1 0.9 1.0" # velocity "0.8 0.9 0.5" # sampstart "0.1 0.5" # sampend "0.9 0.2"
+m4 $ note "[[c3 c3b] c2b c2b]" # velocity "0.8 0.9 0.5"
+ # sampstart "0.1 0.0" # filtfreq "[0.9 0.8 0.9] 0.5" #filtres "[0.2 0.6] 0.4"
+  #lfodest "[0.55 0.44 0.1] 0.5]"  #lfospeed "[0.55 0.44 0.1] 0.5]"
+  #lfodepth "[0.55 0.4] 0.5]"  # tAmp "0.54 0.9"
+
+d2 $ slowspread slow [1,1.5,1.125] $ slowspread density [12,6,3,1.5] $ s "hc"
+
+d2 $ do jimmy <- "{1 1.5 1.125}%1"
+        bob <- "{12 6 3 1.5}%1"
+        slow jimmy $ density bob $ s "cp"
+
+d1 $ whenmod 4 2 (|+| n "2") $ slowcat [
+          s "peri*2 bass*2",
+          s "hc*4? cpr/2",
+          s "tite bd(3,8)" ]
+              # n (run 8)
+
+--------------------------------------------------------------------------------
+
+-----
+m1 silence
+m2 silence
+m3 silence
+m4 silence
+m5 silence
+m6 silence
+m7 silence
+m8 silence
+m9 silence
+m10 silence
+m11 silence
+m12 silence
+-----
 
 
-d1 $ sound "bd sn"
-m1 $ note "c2 c2 c1"
-m2 $ every 4 (density 1) $ note "b3 b3 b3"
-m3 $ slow 4 $ note "b1 b2 c2 c2 b3 a4 "
-m4 $ slow 2 $ note "b2 c2 d2 d2 c3 a2 "
-m5 $ slow 4 $ note "b2 c2 f2 c2 c2 a2"
-m5 $ slow 1 $ note "b2 c2 f2 c1 c2 a2"
-m5 $ slow 1 $ note "b2 c1 f2 c2 c2 a2"
-m6 $ slow 4 $ note "b2"
-d2 $ sound "bd sn"
-d2 silence
-m7 $ slow 1 $ note "b2 b2 b2 b2 b3 c2"
-m8 $ slow 1 $ note "b2 b2 b2 b2 b3 c2"
-m9 $ slow 1 $ note "b2 b3 c2 c3 c3 c3"
-m10 $ slow 8 $ note "b2 b3 c2 b2 b2 b2"
-m12 $ note "c2"
-m11 $ note "c2 c4 c2 c2 c2 c2 "
+
+
+
+cps=(240/60)
+(cps, getNow) <- bpsUtils
+cps 0.3

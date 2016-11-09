@@ -5,7 +5,7 @@
 // chain1 = PV_XFade(chain1, popFreq, 2 );
 // var popFreq = EnvGen.ar(Env([3261, 410, 1000], [0.005, 0.01], curve: \exp));
 
-SynthDef(\delayll, {arg ibs,  gate= 1, freqHP= 20, freqLP= 20000, filtRes=0.5, delme = 0.003, delRes = 0.6, delRez = 0.22,
+SynthDef(\delayll, {arg ibs,  gate= 1, freqHP= 20, freqLP= 20000, filtRes=0.5, delme = 0.003, delRes = 0.6, delRez = 0.22,ofBool=1,
 	delFlt = 10000, delTim = 2 ,delFed = 0.5, lfoFrq = 1, lfoAmt = 1, dryWet = 0.5, lagKarme = 0.12;
 	var source, limiting, rhpf, rlpf, delayHotLine, delayFiltLine,	delayLFOLine, delayDryWet;
 	source = In.ar(ibs);
@@ -18,8 +18,8 @@ SynthDef(\delayll, {arg ibs,  gate= 1, freqHP= 20, freqLP= 20000, filtRes=0.5, d
 	delayFiltLine = IIRFilter.ar(rlpf, Lag2.ar(Fold.ar(delayLFOLine,10,20000),lagKarme),delRez);
 	delayHotLine = CombC.ar(delayFiltLine, Lag2.kr(delTim,1.9), Lag2.kr(delTim,1.9),delFed);
 	delayDryWet = XFade2.ar(rlpf,delayHotLine,dryWet);
-	DetectSilence.ar(delayDryWet, time: 4, doneAction:2);
-	//	Out.ar(~recBus10, delayDryWet);
+	delayDryWet = (2).dbamp * delayDryWet;
+		DetectSilence.ar(delayDryWet+ DC.ar(ofBool),0.2,doneAction:2);
 	ReplaceOut.ar(ibs, delayDryWet);
 }).add;
 
@@ -61,26 +61,28 @@ SynthDef(\ringMod, {arg ibs, carrFreq = 440, modFreq = 2, amp = 0.06, which = 0;
 }).add;
 ///////////////////////////////////////////////////////////////////////////
 
-SynthDef(\nReverb,{arg ibs, maxDelay=0.181, preDelay=0.08, decay=2, numRefl=8, random=0.1;
-
-	var numChan=2;
-	var sig, new, dlys;
-	#numChan, maxDelay, preDelay, decay, numRefl, random = #[8, 0.219, 0.0008, 12, 24, 0.5];
-	sig = In.ar(ibs);
-	new = sig;
-	dlys = Array.fill(numRefl, {
-		new = AllpassN.ar(new, maxDelay,Array.fill(numChan, { random.rand }) + preDelay, decay);
-	});
-	Mix.ar(dlys * Array.series(numRefl, 1, (numRefl+1).reciprocal.neg));
-	ReplaceOut.ar(ibs, dlys);
-}).add;
+// SynthDef(\nReverb,{arg ibs, maxDelay=0.181, preDelay=0.08, decay=2, numRefl=8, random=0.1, ofBool=1;
+//
+// 	var numChan=2;
+// 	var sig, new, dlys;
+// 	#numChan, maxDelay, preDelay, decay, numRefl, random = #[8, 0.219, 0.0008, 12, 24, 0.5];
+// 	sig = In.ar(ibs);
+// 	new = sig;
+// 	dlys = Array.fill(numRefl, {
+// 		new = AllpassN.ar(new, maxDelay,Array.fill(numChan, { random.rand }) + preDelay, decay);
+// 	});
+// 	Mix.ar(dlys * Array.series(numRefl, 1, (numRefl+1).reciprocal.neg));
+// 	dlys = (2).dbamp * dlys;
+// 	DetectSilence.ar(dlys+ DC.ar(ofBool),0.4,doneAction:2);
+// 	ReplaceOut.ar(ibs, dlys);
+// }).add;
 
 
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-SynthDef(\dubecho,{ arg ibs, length = 0.1, fb = 1, sep = 0.00012, amp = 5;
+SynthDef(\dubecho,{ arg ibs, length = 0.1, fb = 0.9, sep = 0.00012, amp = 3, hpFreq = 400, lpFreq = 5000, ofBool = 1;
 	var input = In.ar(ibs);
 	var magic;var real = 0.2;
 	var imag = 0.8;
@@ -90,13 +92,15 @@ SynthDef(\dubecho,{ arg ibs, length = 0.1, fb = 1, sep = 0.00012, amp = 5;
 		arg feedback;
 		var left,right;
 		magic = LeakDC.ar(feedback*fb + input);
-		magic = HPF.ar(magic, 400);
-		magic = LPF.ar(magic, 5000);
+		magic = HPF.ar(magic, hpFreq);
+		magic = LPF.ar(magic, lpFreq);
 		magic = magic.tanh;
 		#left, right = magic;
 		magic = [DelayC.ar(left, 1, LFNoise2.ar(12).range(0,sep)), DelayC.ar(right, 1, LFNoise2.ar(12).range(sep,0))];
 	},length);
 	magic = magic * amp;
+	magic = (-2).dbamp * magic;
+	DetectSilence.ar(magic+ DC.ar(ofBool),0.4,doneAction:2);
 	ReplaceOut.ar(ibs,magic);
 }).add;
 
