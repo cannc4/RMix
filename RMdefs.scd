@@ -1,3 +1,4 @@
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8,11 +9,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 (
 
-
-SynthDef(\masterTape,{ arg bufnum, out = 0;
-	var input = In.ar(0);
-	DiskOut.ar(bufnum, input);
-}).add;
 
 ~recBus1 = Bus.audio(s,1);
 SynthDef(\AR1, { arg in=2;
@@ -92,8 +88,9 @@ SynthDef(\AR5Diskout, {arg out=0, bufnum;
 	Out.ar(out, input.dup);
 }).add;
 
+
 ////////////////////////////////////////////////
-0.2.wait;
+
 ~recBus6 = Bus.audio(s,1);
 
 SynthDef(\AR6, { arg  in=7;
@@ -141,12 +138,9 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 	DiskOut.ar(bufnum, input);
 	Out.ar(out, input.dup);
 }).add;
+
+
 0.2.wait;
-
-
-
-
-
 
 /////////////////////////////////////////////// /////////////////////////////
 ~gr1 = Group.new;
@@ -157,6 +151,22 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~gr6 = Group.new;
 ~gr7 = Group.new;
 ~gr8 = Group.new;
+
+
+
+~ar1 = Synth.head(~gr1,\AR1);
+~ar2 = Synth.head(~gr2,\AR2);
+~ar3 = Synth.head(~gr3,\AR3);
+~ar4 = Synth.head(~gr4,\AR4);
+~ar5 = Synth.head(~gr5,\AR5);
+~ar6 = Synth.head(~gr6,\AR6);
+~ar7 = Synth.head(~gr7,\AR7);
+~ar8 = Synth.head(~gr8,\AR8);
+
+
+0.2.wait;
+
+
 ~gfx11 = Group.new(~gr1, \addToTail);
 ~gfx12 = Group.new(~gr1, \addToTail);
 ~gfx13 = Group.new(~gr1, \addToTail);
@@ -190,16 +200,9 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~gfx83 = Group.new(~gr8, \addToTail);
 ~gfx84 = Group.new(~gr8, \addToTail);
 
-~ar1 = Synth.head(~gr1,\AR1);
-0.5.wait;
 
-~ar2 = Synth.head(~gr2,\AR2);
-~ar3 = Synth.head(~gr3,\AR3);
-~ar4 = Synth.head(~gr4,\AR4);
-~ar5 = Synth.head(~gr5,\AR5);
-~ar6 = Synth.head(~gr6,\AR6);
-~ar7 = Synth.head(~gr7,\AR7);
-~ar8 = Synth.head(~gr8,\AR8);
+0.2.wait;
+
 ~bpm= TempoClock(100/60);
 ~metronome44 = TempoClock.new(~bpm, 0, Main.elapsedTime.ceil);
 ~metronome44.schedAbs(0, {~metronome44.beatsPerBar_(4)});
@@ -218,6 +221,10 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~test_DrumSmpl7 = 1;
 ~test_DrumSmpl8 = 1;
 ~test_Master= 1;
+
+0.5.wait;
+
 "multitrack.scd".loadRelative;
 )
 )
+

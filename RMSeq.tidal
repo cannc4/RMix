@@ -20,13 +20,13 @@ m4 $ note "[[c3 c3b] c2b c2b]" # velocity "0.8 0.9 0.5"
   #lfodepth "[0.55 0.4] 0.5]"  # tAmp "0.54 0.9"
 
 d2 $ slowspread slow [1,1.5,1.125] $ slowspread density [12,6,3,1.5] $ s "hc"
-
+d2 $ every 3 (|-| up "3") $ every 2 (|+| up "5") $ sound "arpy*4" |=| up "0 2 4 5"
 d2 $ do jimmy <- "{1 1.5 1.125}%1"
         bob <- "{12 6 3 1.5}%1"
         slow jimmy $ density bob $ s "cp"
 
 d1 $ whenmod 4 2 (|+| n "2") $ slowcat [
-          s "peri*2 bass*2",
+          s "hh*2 bass*2",
           s "hc*4? cpr/2",
           s "tite bd(3,8)" ]
               # n (run 8)
@@ -55,3 +55,7 @@ m12 silence
 cps=(240/60)
 (cps, getNow) <- bpsUtils
 cps 0.3
+
+
+
+m1 $note "c4 c4 c4"  # filtfreq "0.2 0.5 0.6"   # filtres "0.3 0.5 0.67"

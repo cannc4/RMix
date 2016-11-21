@@ -16,8 +16,7 @@ if (~buf_DrumSmpl4 != nil, { ~buf_DrumSmpl4.close},);
 if (~buf_DrumSmpl5 != nil, { ~buf_DrumSmpl5.close},);
 if (~buf_DrumSmpl6 != nil, { ~buf_DrumSmpl6.close},);
 if (~buf_DrumSmpl7 != nil, { ~buf_DrumSmpl7.close},);
-if (~buf_DrumSmpl8 != nil, { ~buf_DrumSmpl8.close},);
-if (~masterBuf != nil, { ~masterBuf.close},);
+if (~buf_DrumSmpl8 != nil, { ~buf_DrumSmpl8.close});
 
 ~buf_DrumSmpl1.free;
 ~buf_DrumSmpl2.free;

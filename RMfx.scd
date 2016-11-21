@@ -5,6 +5,30 @@
 
 ~defNum = 0;
 //////////////////////////////////// DELAY ////////////////////////////////////
+SynthDef(\eightdels, {arg ibs, maxDelay=10, ofBool=1;
+
+	var in, out, env, phasor, delayIn, out0, out1, out2, out3, out4, out5, out6, out7, length;
+
+	length = rrand(2.0, 4.0);
+	env = EnvGen.ar(Env.new([0,1,1,0],[length/4, length/4, length/2]), 1, doneAction: 2);
+
+	in = In.ar(ibs);
+	delayIn = In.kr(ibs);
+
+
+	out0 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(1/8)), -1);
+	out1 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(2/8)), -0.75);
+	out2 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(3/8)), -0.5);
+	out3 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(4/8)), -0.25);
+	out4 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(5/8)), 0.25);
+	out5 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(6/8)), 0.5);
+	out6 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(7/8)), 0.75);
+	out7 = Pan2.ar(DelayC.ar(in, maxDelay, delayIn*(8/8)), 1);
+	out = (out0+out1+out2+out3+out4+out5+out6+out7)*env;
+	DetectSilence.ar(out+ DC.ar(ofBool),0.2,doneAction:2);
+	ReplaceOut.ar(ibs, out);
+
+}).add;
 
 SynthDef(\delayll, {arg ibs,  gate= 1, freqHP= 20, freqLP= 20000, filtRes=0.5, delme = 0.003, delRes = 0.6, delRez = 0.22,ofBool=1,
 	delFlt = 10000, delTim = 2 ,delFed = 0.5, lfoFrq = 1, lfoAmt = 1, dryWet = 0.5, lagKarme = 0.12, defNum;
@@ -68,11 +92,11 @@ SynthDef(\nReverb,{arg ibs, maxDelay=0.181, preDelay=0.08, decay=2, numRefl=8, r
 
 
 SynthDef(\GVReverb, {arg ibs, roomsize = 243, revtime = 1, damping = 0.1, inputbw = 0.34, defNum,
-	spread = 15, drywet= 0, earlylevel = -11, taillevel= -9, ofBool = 1 ;
+	spread = 15, drywet= 1, earlylevel = -11, taillevel= -9, ofBool = 1,freqHP= 200 ;
 
 	var input = In.ar(ibs);
 	var output = GVerb.ar(input,roomsize,revtime,damping,inputbw,spread, drywet,earlylevel.dbamp,taillevel.dbamp,roomsize);
-
+	output = BHiPass.ar(output, Lag3.kr(freqHP, 0.07), 0.2);
 	output = (defNum).dbamp * output;
 	DetectSilence.ar(output+ DC.ar(ofBool),0.01,doneAction:2);
 	ReplaceOut.ar(ibs,output);
@@ -136,7 +160,7 @@ SynthDef(\audioPitchShiftDelay, { arg ibs,obs = 0, ratio = 1, delayTime = 0.05;
 
 
 	~defNumHold = ~defNumHold+2;
-	~defNum = 1/~defNumHold;
+	~defNum =  (1/~defNumHold) -1;
 };
 
 
