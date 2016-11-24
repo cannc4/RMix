@@ -1,3 +1,4 @@
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7,6 +8,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 (
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
@@ -84,9 +86,25 @@ SynthDef(\AR1, { arg out=0, in=2;
 }).add;
 SynthDef(\AR1Diskout, {arg bufnum;
 	var input = (-10).dbamp * In.ar(~recBus1.index,1);
+=======
+
+
+~recBus1 = Bus.audio(s,1);
+SynthDef(\AR1, { arg in=2;
+	var input;
+	input = SoundIn.ar(in);
+	input = (-3).dbamp * input;
+	OffsetOut.ar(~recBus1, input);
+
+}).add;
+SynthDef(\AR1Diskout, {arg out= 0,bufnum;
+	var input =In.ar(~recBus1.index);
+>>>>>>> master
 	DiskOut.ar(bufnum, input);
+	Out.ar(out, input.dup);
 }).add;
 
+<<<<<<< HEAD
 
 /////////////////////////////////////////////////
 
@@ -96,15 +114,30 @@ SynthDef(\AR2, { arg out=0, in=3;
 	input = (-10).dbamp * input;
 	Out.ar(~recBus2.index, input);
 	Out.ar(out, input.dup);
+=======
+>>>>>>> master
 
+/////////////////////////////////////////////////
+~recBus2 = Bus.audio(s,1);
+SynthDef(\AR2, { arg in=3;
+	var input;
+	input = SoundIn.ar(in);
+	input = (-3).dbamp * input;
+	OffsetOut.ar(~recBus2, input);
 }).add;
+<<<<<<< HEAD
 SynthDef(\AR2Diskout, {arg bufnum;
 	var input = (-10).dbamp * In.ar(~recBus2.index,1);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+SynthDef(\AR2Diskout, {arg out = 0, bufnum;
+	var input = In.ar(~recBus2.index);
+>>>>>>> master
 	DiskOut.ar(bufnum, input);
 	Out.ar(out, input.dup);
 }).add;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 /////////////////////////////////////////////////
@@ -142,11 +175,21 @@ SynthDef(\AR3, { arg  in=4;
 	var input;
 	input = SoundIn.ar(in);
 	input = (-8).dbamp * input;
+=======
+/////////////////////////////////////////////////
+~recBus3 = Bus.audio(s,1);
+
+SynthDef(\AR3, { arg  in=4;
+	var input;
+	input = SoundIn.ar(in);
+	input = (-3).dbamp * input;
+>>>>>>> master
 	OffsetOut.ar(~recBus3, input);
 
 }).add;
 SynthDef(\AR3Diskout, {arg out=0,bufnum;
 	var input =In.ar(~recBus3.index);
+<<<<<<< HEAD
 =======
 
 SynthDef(\AR4, { arg out=0, in=5;
@@ -179,18 +222,29 @@ SynthDef(\AR5Diskout, {arg bufnum;
 }).add;
 
 <<<<<<< HEAD
+=======
+	DiskOut.ar(bufnum, input);
+	Out.ar(out, input.dup);
+}).add;
+
+>>>>>>> master
 /////////////////////////////////////////////////
 ~recBus4 = Bus.audio(s,1);
 
 SynthDef(\AR4, { arg in=5;
 	var input;
 	input = SoundIn.ar(in);
+<<<<<<< HEAD
 	input = (-8).dbamp * input;
+=======
+	input = (-3).dbamp * input;
+>>>>>>> master
 	OffsetOut.ar(~recBus4, input);
 
 }).add;
 SynthDef(\AR4Diskout, {arg  out=0,bufnum;
 	var input =In.ar(~recBus4.index);
+<<<<<<< HEAD
 =======
 ////////////////////////////////////////////////
 
@@ -204,10 +258,13 @@ SynthDef(\AR6, { arg out=0, in=7;
 SynthDef(\AR6Diskout, {arg bufnum;
 	var input = (-10).dbamp * In.ar(~recBus6,1);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+>>>>>>> master
 	DiskOut.ar(bufnum, input);
 	Out.ar(out, input.dup);
 }).add;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ////////////////////////////////////////////////
 ~recBus5 = Bus.audio(s,1);
@@ -279,6 +336,16 @@ SynthDef(\AR8Diskout, {arg bufnum;
 
 //////////////////////////////////// FX START ////////////////////////////////////
 
+=======
+////////////////////////////////////////////////
+~recBus5 = Bus.audio(s,1);
+
+SynthDef(\AR5, { arg  in=6;
+	var input;
+	input = SoundIn.ar(in);
+	input = (-3).dbamp * input;
+	OffsetOut.ar(~recBus5, input);
+>>>>>>> master
 
 
 // chain1 = PV_MagFreeze( chain1, freeze );
@@ -304,6 +371,11 @@ SynthDef(\delayll, {|out =0  gate= 1 freqHP= 20 freqLP= 20000 filtRes=0.5 delme 
 	Out.ar(~recBus10, delayDryWet);
 	Out.ar(out, [delayDryWet,delayDryWet]);
 
+}).add;
+SynthDef(\AR5Diskout, {arg out=0, bufnum;
+	var input = In.ar(~recBus5);
+	DiskOut.ar(bufnum, input);
+	Out.ar(out, input.dup);
 }).add;
 
 SynthDef(\delayDiskout, {arg bufnum;
@@ -332,10 +404,22 @@ SynthDef(\freezeDiskout, {arg bufnum;
 	DiskOut.ar(bufnum, input);
 }).add;
 
+<<<<<<< HEAD
 ///////////////////////////////////////////////////////////////////////////
 
+=======
+////////////////////////////////////////////////
 
+~recBus6 = Bus.audio(s,1);
+>>>>>>> master
 
+SynthDef(\AR6, { arg  in=7;
+	var input;
+	input = SoundIn.ar(in);
+	input = (-3).dbamp * input;
+	OffsetOut.ar(~recBus6, input);
+
+<<<<<<< HEAD
 SynthDef(\ringMod, {arg ibs=~b3, obs=0, carrFreq = 440, modFreq = 2, amp = 0.06, which = 0;
 	var carrier, modulator, input, chain1, chain2, output;
 	input = In.ar(ibs);
@@ -501,6 +585,50 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 
 
 
+=======
+}).add;
+SynthDef(\AR6Diskout, {arg out=0,bufnum;
+	var input =  In.ar(~recBus6);
+	DiskOut.ar(bufnum, input);
+	Out.ar(out, input.dup);
+}).add;
+
+///////////////////////////////////////////////
+
+~recBus7 = Bus.audio(s,1);
+
+SynthDef(\AR7, { arg in=8;
+	var input;
+	input = SoundIn.ar(in);
+	input = (-3).dbamp * input;
+	OffsetOut.ar(~recBus7, input);
+
+}).add;
+SynthDef(\AR7Diskout, {arg out=0,bufnum;
+	var input =In.ar(~recBus7);
+	DiskOut.ar(bufnum, input);
+	Out.ar(out, input.dup);
+}).add;
+
+/////////////////////////////////////////////////////////////////////////////////
+
+~recBus8 = Bus.audio(s,1);
+SynthDef(\AR8, { arg in=9;
+	var input;
+	input = SoundIn.ar(in);
+	input = (-3).dbamp * input;
+	OffsetOut.ar(~recBus8, input);
+
+}).add;
+SynthDef(\AR8Diskout, {arg  out=0,bufnum;
+	var input = In.ar(~recBus8);
+	DiskOut.ar(bufnum, input);
+	Out.ar(out, input.dup);
+}).add;
+
+
+0.2.wait;
+>>>>>>> master
 
 /////////////////////////////////////////////// /////////////////////////////
 ~gr1 = Group.new;
@@ -511,6 +639,7 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~gr6 = Group.new;
 ~gr7 = Group.new;
 ~gr8 = Group.new;
+<<<<<<< HEAD
 ~ar1 = Synth(\AR1,~gr1);
 ~ar2 = Synth(\AR2,~gr2, addAction: \addToHead);
 ~ar3 = Synth(\AR3,~gr3);
@@ -519,6 +648,60 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~ar6 = Synth(\AR6,~gr6);
 ~ar7 = Synth(\AR7,~gr7);
 ~ar8 = Synth(\AR8,~gr8);
+=======
+
+
+
+~ar1 = Synth.head(~gr1,\AR1);
+~ar2 = Synth.head(~gr2,\AR2);
+~ar3 = Synth.head(~gr3,\AR3);
+~ar4 = Synth.head(~gr4,\AR4);
+~ar5 = Synth.head(~gr5,\AR5);
+~ar6 = Synth.head(~gr6,\AR6);
+~ar7 = Synth.head(~gr7,\AR7);
+~ar8 = Synth.head(~gr8,\AR8);
+
+
+0.2.wait;
+
+
+~gfx11 = Group.new(~gr1, \addToTail);
+~gfx12 = Group.new(~gr1, \addToTail);
+~gfx13 = Group.new(~gr1, \addToTail);
+~gfx14 = Group.new(~gr1, \addToTail);
+~gfx21 = Group.new(~gr2, \addToTail);
+~gfx22 = Group.new(~gr2, \addToTail);
+~gfx23 = Group.new(~gr2, \addToTail);
+~gfx24 = Group.new(~gr2, \addToTail);
+~gfx31 = Group.new(~gr3, \addToTail);
+~gfx32 = Group.new(~gr3, \addToTail);
+~gfx33 = Group.new(~gr3, \addToTail);
+~gfx34 = Group.new(~gr3, \addToTail);
+~gfx41 = Group.new(~gr4, \addToTail);
+~gfx42 = Group.new(~gr4, \addToTail);
+~gfx43 = Group.new(~gr4, \addToTail);
+~gfx44 = Group.new(~gr4, \addToTail);
+~gfx51 = Group.new(~gr5, \addToTail);
+~gfx52 = Group.new(~gr5, \addToTail);
+~gfx53 = Group.new(~gr5, \addToTail);
+~gfx54 = Group.new(~gr5, \addToTail);
+~gfx61 = Group.new(~gr6, \addToTail);
+~gfx62 = Group.new(~gr6, \addToTail);
+~gfx63 = Group.new(~gr6, \addToTail);
+~gfx64 = Group.new(~gr6, \addToTail);
+~gfx71 = Group.new(~gr7, \addToTail);
+~gfx72 = Group.new(~gr7, \addToTail);
+~gfx73 = Group.new(~gr7, \addToTail);
+~gfx74 = Group.new(~gr7, \addToTail);
+~gfx81 = Group.new(~gr8, \addToTail);
+~gfx82 = Group.new(~gr8, \addToTail);
+~gfx83 = Group.new(~gr8, \addToTail);
+~gfx84 = Group.new(~gr8, \addToTail);
+
+
+0.2.wait;
+
+>>>>>>> master
 ~bpm= TempoClock(100/60);
 ~metronome44 = TempoClock.new(~bpm, 0, Main.elapsedTime.ceil);
 ~metronome44.schedAbs(0, {~metronome44.beatsPerBar_(4)});
@@ -526,6 +709,10 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~metronome34.schedAbs(0, {~metronome34.beatsPerBar_(3)});
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 (
 ~test_DrumSmpl1 = 1;
 ~test_DrumSmpl2 = 1;
@@ -536,6 +723,7 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~test_DrumSmpl7 = 1;
 ~test_DrumSmpl8 = 1;
 ~test_Master= 1;
+<<<<<<< HEAD
 "multitrack.scd".loadRelative;
 )
 =======
@@ -617,3 +805,12 @@ SynthDef(\AR8Diskout, {arg  out=0,bufnum;
 ~ar8.set(\out, ~b0);*/
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
 )
+=======
+
+0.5.wait;
+
+"multitrack.scd".loadRelative;
+)
+)
+
+>>>>>>> master

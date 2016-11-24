@@ -44,11 +44,15 @@ s.waitForBoot({
 	~test_DrumSmpl7 = 0;
 	~test_DrumSmpl8 = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 	~test_Master= 0;
 
 
 	//Tidal
 	SuperDirt.start;
+<<<<<<< HEAD
 =======
 	~test_freeze = 0;
 	~test_delay = 0;
@@ -80,8 +84,9 @@ s.waitForBoot({
 
 
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+>>>>>>> master
 	v = s.volume;
-	v.volume = -3;
 
 });
 )

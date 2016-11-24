@@ -8,6 +8,9 @@
 ~trk_DrumSmpl7.free;
 ~trk_DrumSmpl8.free;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 ~trk_Master.free;
 ////
 if (~buf_DrumSmpl1 != nil, { ~buf_DrumSmpl1.close},);
@@ -17,6 +20,7 @@ if (~buf_DrumSmpl4 != nil, { ~buf_DrumSmpl4.close},);
 if (~buf_DrumSmpl5 != nil, { ~buf_DrumSmpl5.close},);
 if (~buf_DrumSmpl6 != nil, { ~buf_DrumSmpl6.close},);
 if (~buf_DrumSmpl7 != nil, { ~buf_DrumSmpl7.close},);
+<<<<<<< HEAD
 if (~buf_DrumSmpl8 != nil, { ~buf_DrumSmpl8.close},);
 if (~masterBuf != nil, { ~masterBuf.close},);
 
@@ -39,6 +43,10 @@ if (~masterBuf != nil, { ~masterBuf.close},);
 // if (~test_freeze != nil, { ~test_freeze.close},);
 // if (~test_dubecho != nil, { ~test_dubecho.close},);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+if (~buf_DrumSmpl8 != nil, { ~buf_DrumSmpl8.close});
+
+>>>>>>> master
 ~buf_DrumSmpl1.free;
 ~buf_DrumSmpl2.free;
 ~buf_DrumSmpl3.free;
@@ -48,14 +56,20 @@ if (~masterBuf != nil, { ~masterBuf.close},);
 ~buf_DrumSmpl7.free;
 ~buf_DrumSmpl8.free;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 ~masterBuf.free;
 
 
 
+<<<<<<< HEAD
 =======
 ~buf_dubecho.free;
 ~buf_ringMod.free;
 ~buf_freeze.free;
 ~buf_delay.free;
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+>>>>>>> master
 )

@@ -4,6 +4,7 @@
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 ////////////////////////  RMX                    ///////////////////////
 ////////////////////////  Version 20             ///////////////////////
@@ -11,12 +12,19 @@
 ////////////////////////  RMix                   ///////////////////////
 ////////////////////////  Version 11             ///////////////////////
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+////////////////////////  RMX                    ///////////////////////
+////////////////////////  Version 20             ///////////////////////
+>>>>>>> master
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 (
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
+=======
+>>>>>>> master
  b = Bus.control(s, 1); b.set(880);
 b.set(10000);
 ~pitchshift =Synth(\pitchshifter, [\ibs, ~recBus6], ~gr6);
@@ -194,6 +202,7 @@ Pbindef(\track4sq, \dur,Pbjorklund2(21, 32, inf)/4);
 
 )
 ~grainBuf = Buffer.readChannel(s,"/Users/canince/Desktop/Rudeboy_247Long.wav", channels: [0]);
+<<<<<<< HEAD
 =======
 ~delay = Synth(\delay, [\ibs, ~b1, \out, 0, \gate, 1, \freqHP, 20,\freqLP, 20000, \filtRes, 0.5 ,\delme, 0.003, \delRes, 0.6 ,\delRez, 0.22, \delFlt, 10000 ,\delTim , 2 ,\delFed , 0.5 ,\lfoFrq , 1, \lfoAmt , 1, \dryWet , 0.5 , \lagKarme , 0.12],addAction:\addToTail);
 ~freeze= Synth(\freeze, [ \ibs, ~b2, \obs , 0,  \freeze,0],addAction: \addToTail);
@@ -243,6 +252,8 @@ Pbindef(\track4sq, \dur,Pbjorklund2(21, 32, inf)/4);
 // SynthDescLib.global.browse;
 // )
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+>>>>>>> master
 ~tempos = [120/160, 160/60];
 ~tc = TempoClock(2);
 ~tc = TempoClock(3.2);
@@ -306,7 +317,10 @@ inf)*/
 //Pseq([Pseq([100, 200, 300], 2), 400, 500, 600],inf)
 
 //PdurStutter
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
+=======
+>>>>>>> master
 Pbindef(\track3sq, \dur,Pbjorklund2(17, 32, inf)/8);
 "multitrackclose.scd".loadRelative;
 ~freeze7.free
@@ -374,6 +388,7 @@ Pbindef(\granular1, \pos, Pseq([2, 0, 0, 0], inf));
 Pbindef(\granular1,\envbuf,k);
 ///
 Pbindef(\track1sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(4));
+<<<<<<< HEAD
 =======
 
 
@@ -384,6 +399,8 @@ Pbindef(\granular1, \dur, Pseq([1, [1,2,1]].convertRhythm / 4, inf));
 ///
 Pbindef(\track1sq).play(~tc);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+>>>>>>> master
 Pbindef(\track1sq).stop;
 Pbindef(\track1sq,\degree,Pseq([-0.4,-0.2], inf));
 Pbindef(\track1sq, \dur, Pseq([0.4,0.2,0.1,0.1,0.1], inf));
@@ -396,6 +413,7 @@ Pbindef(\track1sq,\dur,  Pseg(Pseq([~tc*0.25,~tc*0.2,~tc*0.25],inf)));
 Pbindef(\track1sq,\dur,  Pseg(Pseq([~tc*0.25,~tc*0.2,~tc*0.25],inf)));
 Pbindef(\track1sq, \dur, Pclutch(Pwhite(~tc, ~tc*0.25, inf), Pdiff(Pkey(\degree)).abs > 0));
 Pbindef(\track1sq,\dur,Pfunc({ ~tc }));
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 Pbindef(\track1sq,\dur, Pseq([1, [2,2,2.5]].convertRhythm / 4 , inf));//////////////
 Pbindef(\track1sq, \amp, Pseq([0.8, 0.5]*10,inf));///////////////
@@ -403,6 +421,10 @@ Pbindef(\track1sq, \amp, Pseq([0.8, 0.5]*10,inf));///////////////
 Pbindef(\track1sq,\dur, Pseq([5, [2,1,2]].convertRhythm / 2, inf));//////////////
 Pbindef(\track1sq, \amp, Pseq([0.2, 0.15, 0.1, 0.09, 0.5]*8,inf));///////////////
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+Pbindef(\track1sq,\dur, Pseq([1, [2,2,2.5]].convertRhythm / 4 , inf));//////////////
+Pbindef(\track1sq, \amp, Pseq([0.8, 0.5]*10,inf));///////////////
+>>>>>>> master
 Pbindef(\track1sq,\dur, Pseg(Pseq([0.01,0.1,0.09,0.7,0.2,0.04],inf) ));///////
 Pbindef(\track3samplepr8,\control, Pseq([120,0,125,0,120,0], inf) );
 Pbindef(\track1samplepr1,\control,Pclutch(Pwhite(12, -12, inf), Pdiff(Pkey(\dur)).abs > 0));
@@ -412,6 +434,7 @@ Pbindef(\track1samplepr7).stop;
 Pbindef(\track1samplepr8).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
 
 Pbindef(\track1sq).play(~tc);
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 Pbindef(\track8sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
 Pbindef(\track12sq).play(clock: ~metronome34, protoEvent: Event.default, quant: Quant(3));
@@ -420,11 +443,17 @@ Pbindef(\track2sq).play(clock: ~metronome34, protoEvent: Event.default, quant: Q
 Pbindef(\track2sq).play(~tc);
 Pbindef(\track2sq).stop
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+Pbindef(\track8sq).play(clock: ~metronome44, protoEvent: Event.default, quant: Quant(1));
+Pbindef(\track12sq).play(clock: ~metronome34, protoEvent: Event.default, quant: Quant(3));
+Pbindef(\track2sq).play(clock: ~metronome34, protoEvent: Event.default, quant: Quant(2));
+>>>>>>> master
 //
 Pbindef(\track2sq, \amp, Pseq([1,1,0,1,0], inf));
 Pbindef(\track2sq, \amp, Pwhite(0.4,1.1));
 Pbindef(\track2sq, \dur, Pseq([Pseq([1/16], 15), Pseq([1/64, 1/64, 1/32], 1)], inf) * 3);
 Pbindef(\track2sq, \degree, Pn(Pseries(0, Pwrand([Pwhite(-3,3,inf).round(1),1],[32,1],inf), 4),inf)-1 + [0,2,-1,-14]);
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 Pbindef(\track2sq, \dur, Pbjorklund2(3, 8, inf)/2);
 Pbindef(\track2sq, \amp, Pseq([4, [5,2,2]].convertRhythm / 2, inf));
@@ -432,6 +461,10 @@ Pbindef(\track2sq, \amp, Pseq([4, [5,2,2]].convertRhythm / 2, inf));
 Pbindef(\track2sq, \dur, Pseq([(~tc* 0.2),(~tc)],inf));
 Pbindef(\track2sq, \dur, Pseq([4, [5,2,1]].convertRhythm / 2, inf));
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+Pbindef(\track2sq, \dur, Pbjorklund2(3, 8, inf)/2);
+Pbindef(\track2sq, \amp, Pseq([4, [5,2,2]].convertRhythm / 2, inf));
+>>>>>>> master
 Pbindef(\track2sq,\amp, Pseg(Pseq([0.1,0.4,2,0.9,0.8],inf) ));//
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.1,0.4,1,0.9,0.8],inf) ));////////////////////
 Pbindef(\track2sq, \dur, Pseq([2,[1,2]].convertRhythm/2, inf));
@@ -440,11 +473,15 @@ Pbindef(\track2sq, \amp, Pseq([0.9,0,1, 0.8,0,9], inf));
 Pbindef(\track2sq,\amp, Pseg(Pseq([0.08,0.9,0.05,0.95,0.1,0.02]*1,inf) ));
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.08,0.9,0.05,0.95,0.1,0.02]*2/10,inf) ));///////
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.08,0.2,0.05,0.15,0.1,0.2],inf) ));///////
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 Pbindef(\track2sq,\dur, Pseq([1, [4,1,4]].convertRhythm / 8, inf));////////
 =======
 Pbindef(\track2sq,\dur, Pseq([6, [2,1,2]].convertRhythm / 2, inf));////////
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+Pbindef(\track2sq,\dur, Pseq([1, [4,1,4]].convertRhythm / 8, inf));////////
+>>>>>>> master
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.02,0.9,0.05,0.7,0.1,0.08],inf) ));///////
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.01,0.1,0.09,0.7,0.2,0.04].convertRhythm/2,inf) ));///////
 Pbindef(\track2sq,\amp, Pseg(Pseq([0.01,0.1,0.25,0.7,0.2,0.04]*2,inf) ));///////
@@ -532,11 +569,15 @@ Pbindef(\track5synthpr2,\control,Pclutch(Pwhite(120, 100, inf), Pdiff(Pkey(\dur)
 Pbindef(\track5samplepr8,\control,Pclutch(Pwhite(120, 80, inf), Pdiff(Pkey(\dur)).abs > 0));
 Pbindef(\track5samplepr8).play();
 
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 Pbindef(\track9sq, \amp, Pseq([1,2,3], inf));
 =======
 Pbindef(\track9sq, \amp, Pseq([1,1,0,1,0], inf));
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+Pbindef(\track9sq, \amp, Pseq([1,2,3], inf));
+>>>>>>> master
 Pbindef(\track2sq, \amp, Pwhite(0.4,1.1));
 Pbindef(\track2sq, \dur, Pseq([Pseq([1/16], 15), Pseq([1/64, 1/64, 1/32], 1)], inf) * 3);
 Pbindef(\track2sq, \degree, Pn(Pseries(0, Pwrand([Pwhite(-3,3,inf).round(1),1],[32,1],inf), 4),inf)-1 + [0,2,-1,-14]);
@@ -550,11 +591,15 @@ Pbindef(\track2sq, \amp, Pseq([0.9,0,1, 0.8,0,9], inf));
 Pbindef(\track2sq,\amp, Pseg(Pseq([0.08,0.9,0.05,0.95,0.1,0.02]*1,inf) ));
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.08,0.9,0.05,0.95,0.1,0.02]*2/10,inf) ));///////
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.08,0.2,0.05,0.15,0.1,0.2],inf) ));///////
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 Pbindef(\track8sq,\dur, Pseq([3.5, [2,1,2]].convertRhythm / 2, inf));////////
 =======
 Pbindef(\track9sq,\dur, Pseq([3.5, [2,1,2]].convertRhythm / 2, inf));////////
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+Pbindef(\track8sq,\dur, Pseq([3.5, [2,1,2]].convertRhythm / 2, inf));////////
+>>>>>>> master
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.02,0.9,0.05,0.7,0.1,0.08],inf) ));///////
 Pbindef(\track2sq,\dur, Pseg(Pseq([0.01,0.1,0.09,0.7,0.2,0.04],inf) ));///////
 Pbindef(\track2sq,\amp, Pseg(Pseq([0.01,0.1,0.25,0.7,0.2,0.04]*2,inf) ));///////
@@ -689,6 +734,7 @@ Pbindef(\track2sq,\degree,Pswitch([Pwhite(7, 14, inf), Pwhite(-7, 0, inf)], Pfun
 
 ~delayll3.set( \out, 0, \gate, 1, \freqHP, 10,\freqLP, 8000, \filtRes, 0.2 ,\delme, 0.9, \delRes, 0.2 ,\delRez, 2, \delFlt, 60000,\delTim , 1.5 ,\delFed , 1.5 ,\lfoFrq , 1000, \lfoAmt , 0.4, \dryWet , 1 , \lagKarme , 0.5);
 
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 
 =======
@@ -698,6 +744,9 @@ Pbindef(\track2sq,\degree,Pswitch([Pwhite(7, 14, inf), Pwhite(-7, 0, inf)], Pfun
 (
 ~delay.set( \out, 0, \gate, 1, \freqHP, 2,\freqLP, 10000, \filtRes, 0.2 ,\delme, 0.2, \delRes, 0.2 ,\delRez, 2, \delFlt, 1000,\delTim , 0.5 ,\delFed , 0.9 ,\lfoFrq , 10, \lfoAmt , 2, \dryWet , 1 , \lagKarme , 0.2);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+
+>>>>>>> master
 )
 ~playback.set(\obs, 0);
 ~echo.set(\amp, 5, \length, 6, \fb, 0.8, \sep, 0.0012);
@@ -707,11 +756,15 @@ Pbindef(\track2sq,\degree,Pswitch([Pwhite(7, 14, inf), Pwhite(-7, 0, inf)], Pfun
 ~echo.set(\amp, 10, \length, 0.1, \fb, 0.2, \sep, 0.012);
 ~feedbackDelay.set(\mix, 0.5, \feedback, 0.5);
 ~echo.set(\amp, 30, \length, 0.001, \fb, 0.8, \sep, 0.0012);
+<<<<<<< HEAD
 <<<<<<< HEAD:Mats.scd
 ~freeze.set(\out,~recBus1);
 =======
 ~freeze.set(\freq,1000);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97:Rmix10.scd
+=======
+~freeze.set(\out,~recBus1);
+>>>>>>> master
 //8192
 ~freeze.set(\bufSize,2);
 ~reverb2.set(\obs, ~b4);

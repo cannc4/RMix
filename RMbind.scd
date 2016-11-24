@@ -9,6 +9,9 @@ m = MIDIOut(0, MIDIClient.destinations.at(0).uid);
 Pdef(\granular1,
 	Pbind(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 		\instrument, "granular_sampling",
 		\trigger, 0,
 		\graindur, Pseq([Pseq([0.1], 15), 0.2], inf),
@@ -19,6 +22,7 @@ Pdef(\granular1,
 		\amp, Pwhite(0.8, 1),
 		\envbuf, -1,
 		\dur, Pwhite(0.8, 1);
+<<<<<<< HEAD
 =======
 	\instrument, "granular_sampling",
 	\trigger, 0,
@@ -31,12 +35,17 @@ Pdef(\granular1,
 	\envbuf, -1,
 	\dur, Pwhite(0.8, 1);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+>>>>>>> master
 ));
 
 
 Pdef(\granular2,
 	Pbind(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 		\instrument, \granular_sampling,
 		\trigger, 0,
 		\graindur, Pseq([0.5, 1, 0.5, 1], inf),
@@ -47,6 +56,7 @@ Pdef(\granular2,
 		\amp, Prand([0.9, 1], inf),
 		\envbuf, -1,
 		\dur, Pseq([0.5, 1, 0.5, 1], inf);
+<<<<<<< HEAD
 =======
 	\instrument, \granular_sampling,
 	\trigger, 0,
@@ -59,11 +69,16 @@ Pdef(\granular2,
 	\envbuf, -1,
 	\dur, Pseq([0.5, 1, 0.5, 1], inf);
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+>>>>>>> master
 ));
 
 Pdef(\granular2,
 	Pbind(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 		\instrument, \granular_sampling,
 		\trigger, 0,
 		\graindur, 0.15,
@@ -74,6 +89,7 @@ Pdef(\granular2,
 		\amp, 0.9,
 		\envbuf, 1,
 		\dur, 0.5;
+<<<<<<< HEAD
 =======
 	\instrument, \granular_sampling,
 	\trigger, 0,
@@ -86,6 +102,8 @@ Pdef(\granular2,
 	\envbuf, 1,
 	\dur, 0.5;
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+>>>>>>> master
 ));
 //////////////////////////////////// TRACK1/BD ////////////////////////////////////////////////////
 
@@ -1638,6 +1656,9 @@ Pdef(\track12samplepr8,
 Pdef(\track1sq,
 	Pbind(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
 		\type, \midi,
 		// this line is optional b/c noteOn is the default
 		// just making it explicit here
@@ -1647,6 +1668,7 @@ Pdef(\track1sq,
 		\degree,Pseq([0.2,0.5], inf),
 		\dur, Pseq([1, 1, 1, 1]/20, inf),
 		\amp, Pseq([1, 1, 2, 1], inf)
+<<<<<<< HEAD
 =======
     \type, \midi,
         // this line is optional b/c noteOn is the default
@@ -1660,6 +1682,8 @@ Pdef(\track1sq,
 
 	\amp, Pseq([1, 1, 2, 1], inf)
 >>>>>>> ec520e10694c5b7b3e25a0c30644033b39961a97
+=======
+>>>>>>> master
 
 ));
 
